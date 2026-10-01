@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVI op school — gids voor leerondersteuners en leerkrachten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF2EE;
+    --surface:#FFFFFF;
+    --ink:#182422;
+    --ink-muted:#4E5F59;
+    --ink-faint:#7C8B85;
+    --teal:#2F6459;
+    --teal-deep:#1E453D;
+    --teal-tint:#E3EDE9;
+    --ochre:#C0752B;
+    --ochre-tint:#F6E7CF;
+    --line:#D7DEDA;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(24,36,34,.06), 0 6px 20px rgba(24,36,34,.05);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    color:var(--ink);
+    margin:0 0 .5em 0;
+    line-height:1.15;
+  }
+  p{ line-height:1.65; color:var(--ink-muted); margin:0 0 1em 0; max-width:68ch;}
+  a{ color:var(--teal-deep); }
+  a:focus-visible, button:focus-visible{ outline:3px solid var(--ochre); outline-offset:2px; border-radius:4px;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    background:var(--teal-deep);
+    color:#fff;
+    padding:14px 24px;
+    display:flex; align-items:center; gap:14px;
+    box-shadow:0 2px 12px rgba(0,0,0,.12);
+  }
+  .topbar .mark{
+    width:34px; height:34px; flex:0 0 auto;
+    border-radius:9px;
+    background:var(--ochre);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .topbar .mark svg{ width:19px; height:19px; stroke:#1E1608; }
+  .topbar-titles{ display:flex; flex-direction:column; line-height:1.2; }
+  .topbar-titles strong{ font-family:'Fraunces',serif; font-size:1.05rem; font-weight:600; }
+  .topbar-titles span{ font-size:.8rem; color:#CFE0DB; }
+  .menu-toggle{
+    margin-left:auto; display:none;
+    background:transparent; border:1px solid rgba(255,255,255,.35);
+    color:#fff; border-radius:8px; padding:8px 10px; cursor:pointer;
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{ display:flex; align-items:flex-start; max-width:1180px; margin:0 auto; }
+  nav.side{
+    width:270px; flex:0 0 270px;
+    position:sticky; top:64px;
+    height:calc(100vh - 64px);
+    overflow-y:auto;
+    padding:28px 14px 28px 24px;
+  }
+  nav.side ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px;}
+  nav.side button{
+    width:100%; text-align:left;
+    display:flex; align-items:center; gap:10px;
+    background:transparent; border:none;
+    padding:10px 12px; border-radius:10px;
+    font-family:'Inter',sans-serif; font-size:.92rem; font-weight:500;
+    color:var(--ink-muted); cursor:pointer;
+  }
+  nav.side button svg{ width:17px; height:17px; flex:0 0 auto; stroke:var(--ink-faint); }
+  nav.side button:hover{ background:rgba(47,100,89,.08); color:var(--ink); }
+  nav.side button[aria-current="true"]{
+    background:var(--surface); color:var(--teal-deep); font-weight:600;
+    box-shadow:var(--shadow);
+  }
+  nav.side button[aria-current="true"] svg{ stroke:var(--teal-deep); }
+
+  main{ flex:1 1 auto; min-width:0; padding:32px 28px 90px; }
+  section.panel{ display:none; max-width:760px; }
+  section.panel.active{ display:block; animation:fade .35s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.78rem; font-weight:600; color:var(--teal-deep);
+    background:var(--teal-tint); padding:4px 11px; border-radius:99px;
+    margin-bottom:14px;
+  }
+  section.panel h2{ font-size:2rem; }
+  section.panel > p.lead{ font-size:1.08rem; color:var(--ink-muted); max-width:62ch; }
+
+  h3.sub{ font-size:1.2rem; margin-top:2.2em; }
+
+  /* ---------- Cards / grids ---------- */
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0 26px; }
+  @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
+  .card{
+    background:var(--surface); border-radius:var(--radius);
+    padding:18px 18px 16px; box-shadow:var(--shadow);
+    border-top:3px solid var(--teal);
+  }
+  .card h4{ font-size:1rem; font-family:'Inter',sans-serif; font-weight:700; margin-bottom:6px; }
+  .card p{ font-size:.92rem; margin-bottom:0; }
+
+  /* ---------- Note / onthoud box ---------- */
+  .note{
+    border-left:3px solid var(--ochre);
+    background:var(--ochre-tint);
+    padding:14px 18px; border-radius:0 10px 10px 0;
+    margin:20px 0;
+  }
+  .note p{ color:#54390F; margin-bottom:0; font-size:.95rem; }
+  .note strong{ color:#3B2708; }
+
+  /* ---------- Analogy / quote blocks ---------- */
+  .analogy{
+    background:var(--teal-tint);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    margin:14px 0;
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  .analogy svg{ flex:0 0 auto; width:20px; height:20px; stroke:var(--teal-deep); margin-top:3px;}
+  .analogy p{ font-family:'Fraunces',serif; font-style:italic; font-weight:500; color:var(--teal-deep); font-size:1.03rem; margin-bottom:0; line-height:1.5;}
+
+  /* ---------- Steps ---------- */
+  .steps{ list-style:none; margin:16px 0; padding:0; display:flex; flex-direction:column; gap:12px;}
+  .steps li{ display:flex; gap:12px; align-items:flex-start; }
+  .steps .num{
+    flex:0 0 auto; width:26px; height:26px; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:.8rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif;
+  }
+  .steps p{ margin-bottom:0; font-size:.94rem; }
+
+  /* ---------- Video / resource cards ---------- */
+  .media-card{
+    display:flex; gap:14px; align-items:center;
+    background:var(--surface); border-radius:var(--radius);
+    padding:14px 16px; box-shadow:var(--shadow);
+    text-decoration:none; margin-bottom:10px;
+  }
+  .media-card:hover{ box-shadow:0 2px 4px rgba(24,36,34,.08), 0 10px 26px rgba(24,36,34,.09); }
+  .media-icon{
+    flex:0 0 auto; width:40px; height:40px; border-radius:10px;
+    background:var(--teal-tint); display:flex; align-items:center; justify-content:center;
+  }
+  .media-icon svg{ width:18px; height:18px; stroke:var(--teal-deep); }
+  .media-card .txt strong{ display:block; color:var(--ink); font-size:.95rem; font-weight:600; }
+  .media-card .txt span{ color:var(--ink-faint); font-size:.8rem; }
+
+  .res-group{ margin-bottom:24px; }
+  .res-group h3{ font-size:1rem; text-transform:none; color:var(--teal-deep); margin-bottom:10px;}
+
+  table.compact{ width:100%; border-collapse:collapse; margin:14px 0 24px; font-size:.92rem;}
+  table.compact th, table.compact td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.compact th{ color:var(--teal-deep); font-weight:700; font-size:.82rem;}
+  table.compact td p{margin:0; font-size:.9rem;}
+
+  .tag{
+    display:inline-block; font-size:.74rem; font-weight:600;
+    background:var(--teal-tint); color:var(--teal-deep);
+    padding:3px 9px; border-radius:99px; margin:2px 5px 2px 0;
+  }
+
+  footer.appfoot{
+    max-width:760px; margin-top:50px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  footer.appfoot p{ font-size:.82rem; color:var(--ink-faint); }
+
+  @media print{
+    .topbar, nav.side{ display:none !important; }
+    main{ padding:0; }
+    body{ background:#fff; }
+    .card, .media-card, .analogy, .note{ box-shadow:none; }
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width:900px){
+    .layout{ flex-direction:column; }
+    nav.side{
+      position:static; width:100%; height:auto;
+      padding:10px 12px; border-bottom:1px solid var(--line);
+      background:var(--bg);
+    }
+    nav.side ul{ flex-direction:row; overflow-x:auto; gap:6px; padding-bottom:4px; }
+    nav.side li{ flex:0 0 auto; }
+    nav.side button{ white-space:nowrap; }
+    main{ padding:22px 18px 70px; }
+    section.panel h2{ font-size:1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="mark" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+  </div>
+  <div class="topbar-titles">
+    <strong>CVI op school</strong>
+    <span>Gids voor leerondersteuners &amp; leerkrachten lager onderwijs</span>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="side" aria-label="Onderdelen">
+    <ul id="navlist">
+      <li><button data-target="intro" aria-current="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        Wat is CVI?
+      </button></li>
+      <li><button data-target="uitleg">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+        Uitleg aan leerlingen
+      </button></li>
+      <li><button data-target="knelpunten">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Mogelijke knelpunten
+      </button></li>
+      <li><button data-target="aanpassingen">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-11M12 6V3M20 21v-5M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/></svg>
+        Redelijke aanpassingen
+      </button></li>
+      <li><button data-target="ondersteuning">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.6Z"/></svg>
+        Ondersteunen
+      </button></li>
+      <li><button data-target="werkgeheugen">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2a5.5 5.5 0 0 0-4.5 8.7A5 5 0 0 0 6 20h9a5 5 0 0 0 1-9.9A5.5 5.5 0 0 0 9.5 2Z"/><path d="M9 8v8M15 8v8M9 12h6"/></svg>
+        CVI &amp; werkgeheugen
+      </button></li>
+      <li><button data-target="comorbiditeit">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>
+        Comorbiditeit
+      </button></li>
+      <li><button data-target="bronnen">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.4l2-2a5 5 0 0 0-7-7l-1.2 1.1"/><path d="M14 11a5 5 0 0 0-7.5-.4l-2 2a5 5 0 0 0 7 7l1.1-1.1"/></svg>
+        Links &amp; video's
+      </button></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- 1. WAT IS CVI -->
+    <section class="panel active" id="intro">
+      <span class="eyebrow">Basis</span>
+      <h2>Wat is CVI?</h2>
+      <p class="lead">CVI staat voor <strong>Cerebrale Visuele Inperking</strong> (ook wel cerebrale visuele stoornis genoemd). Het is een probleem met zien dat ontstaat in de hersenen — niet in de ogen.</p>
+
+      <p>De ogen van een leerling met CVI werken meestal gewoon goed: ze nemen het beeld op zoals bij ieder ander. Maar ergens tussen "het oog ziet iets" en "de hersenen begrijpen wat het is", loopt er iets vast. Het helpt om <strong>zien</strong> (de fysieke input die het oog opvangt) te onderscheiden van <strong>waarnemen</strong> (het herkennen en begrijpen van die input door de hersenen). Bij CVI is het zien meestal intact; het waarnemen verloopt anders.</p>
+
+      <div class="analogy">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="14" height="10" rx="1.5"/><path d="M6 18h6"/><path d="M9 14v4"/><circle cx="20" cy="9" r="2.5"/><path d="M16.5 9h1"/></svg>
+        <div>
+        <p style="margin-bottom:.6em;">"Stel je voor dat je twee uitstekende camera's (de ogen) hebt. Die maken scherpe foto's en video's in hoge resolutie. De kabels naar de computer (de oogzenuwen) zijn ook van topkwaliteit; het signaal wordt zonder kwaliteitsverlies verzonden.</p>
+        <p style="margin-bottom:.6em;">De computer zelf (de hersenen) heeft echter moeite met de software. De grafische kaart of het verwerkingsprogramma raakt voortdurend overbelast of heeft specifieke 'glitches' (fouten in de code):</p>
+        <ul style="margin:0 0 .6em; padding-left:1.1em; font-family:'Fraunces',serif; font-style:italic; font-weight:500; color:var(--teal-deep); font-size:1.03rem; line-height:1.5;">
+          <li style="margin-bottom:.5em;"><strong>Vertraagde laadtijd:</strong> het duurt simpelweg langer voordat een beeld geladen en herkend wordt.</li>
+          <li style="margin-bottom:.5em;"><strong>Systeemcrash bij drukte:</strong> als er te veel informatie tegelijk binnenkomt (zoals in een drukke supermarkt of een volle klas), loopt het systeem vast of gaat het haperen (visuele overprikkeling).</li>
+          <li style="margin-bottom:.5em;"><strong>Herkenningsfouten:</strong> soms herkent de software objecten niet. Je kijkt naar een sleutelbos die recht voor je ligt, maar de hersenen vertalen de omtrekken niet naar het concept 'sleutel'.</li>
+          <li style="margin-bottom:.5em;"><strong>Geen 3D-weergave (dieptezicht):</strong> de 3D-functie van de software hapert. De computer heeft moeite om te berekenen hoe ver weg iets is, waardoor een leerling bijvoorbeeld de overgang van een stoeprand mist of de hoogte van een traptrede lastig kan inschatten.</li>
+          <li style="margin-bottom:.5em;"><strong>Haperende video (beweging):</strong> bewegende beelden worden niet vloeiend verwerkt. Een bal die gegooid wordt, lijkt voor de computer soms te 'teleporteren' in plaats van soepel te vliegen, wat vangen of ontwijken heel moeilijk maakt.</li>
+          <li><strong>Sociale softwarefout (gezichten en emoties):</strong> het herkennen van gezichten en subtiele gezichtsuitdrukkingen vraagt een heel specifiek, zwaar computerprogramma. Bij CVI werkt dit deel vaak niet goed. De leerling ziet wel een gezicht, maar de computer kan de emotie niet snel genoeg 'lezen' of herkent zelfs een bekende leerkracht of klasgenoot niet direct.</li>
+        </ul>
+        <p style="margin-bottom:0;">"</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Waardoor ontstaat het?</h3>
+      <p>CVI ontstaat door schade aan, of een afwijkende ontwikkeling van, de hersengebieden en -banen die visuele informatie verwerken. Veelvoorkomende oorzaken zijn vroeggeboorte, zuurstoftekort rond de geboorte, hersenletsel, infecties of epilepsie. CVI is in ontwikkelde landen de meest voorkomende oorzaak van blijvende visuele beperkingen bij kinderen, met een geschatte 2 à 3 op 1000 kinderen.</p>
+
+      <h3 class="sub">Waarom is het niet altijd zichtbaar?</h3>
+      <p>Bij een standaard oogonderzoek scoort een kind met CVI vaak "normaal", omdat de ogen zelf prima functioneren. Daardoor wordt CVI soms laat herkend, of verward met onoplettendheid, koppigheid, faalangst of motorische onhandigheid.</p>
+
+      <h3 class="sub">Waarom dit zo vermoeiend is</h3>
+      <p>Bij gezonde hersenen kost visuele verwerking nauwelijks energie; het gebeurt volautomatisch op de achtergrond. Bij CVI moeten de hersenen bij elk beeld bewust gaan analyseren wat ze zien — waarneming verandert van een automatische reflex in constante denksport. Dit verklaart waarom leerlingen met CVI vaak extreem vermoeid raken, ook al zien hun ogen volgens de oogarts perfect scherp. Diezelfde extra inspanning speelt ook mee bij het <a href="#" data-jump="werkgeheugen">visueel werkgeheugen</a>: onthouden wat je net zag, kost voor hen meer moeite dan voor leeftijdsgenoten.</p>
+
+      <div class="note">
+        <p><strong>Onthoud:</strong> "hèt kind met CVI" bestaat niet. Afhankelijk van welk hersengebied is aangetast, verschilt het profiel sterk van kind tot kind. Omdat waarnemen zoveel energie kost, wisselt ook het functioneren van één en hetzelfde kind sterk: vermoeidheid, drukte, stress of een onbekende omgeving beïnvloeden hoeveel een kind op dat moment kan zien en verwerken. Dat maakt het voor de omgeving soms verwarrend — "gisteren kon hij het toch wel?"</p>
+      </div>
+    </section>
+
+    <!-- 2. UITLEG AAN LEERLINGEN -->
+    <section class="panel" id="uitleg">
+      <span class="eyebrow">Psycho-educatie</span>
+      <h2>CVI uitleggen aan leerlingen</h2>
+      <p class="lead">Woorden geven aan wat een leerling ervaart, geeft grip en zelfvertrouwen — en vermindert onbegrip bij klasgenoten. Sluit steeds aan bij wat dít kind concreet moeilijk vindt, in plaats van algemene uitleg te geven.</p>
+
+      <h3 class="sub">Kindvriendelijke vergelijkingen</h3>
+
+      <p style="font-size:.85rem; font-weight:600; color:var(--ink-faint); margin-bottom:8px;">Het verhaal van de puzzel — voor jongere kinderen</p>
+      <div class="analogy">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <p>"Als je naar iets kijkt, sturen je ogen allemaal puzzelstukjes naar je hersenen. Je ogen doen dat heel snel en goed. Normaal gesproken leggen je hersenen die puzzel direct in één flits in elkaar, zodat je meteen ziet wat het is.<br><br>
+        Bij CVI duurt het leggen van die puzzel veel langer, of vallen er soms stukjes van de tafel. Je hersenen moeten superhard nadenken om van al die losse stukjes een logisch plaatje te maken. Soms lukt het niet, of raak je er heel moe van omdat puzzelen in je hoofd topsport is!"</p>
+      </div>
+
+      <p style="font-size:.85rem; font-weight:600; color:var(--ink-faint); margin:20px 0 8px;">Het verhaal van de computer en de webcam — voor iets oudere kinderen</p>
+      <div class="analogy">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="14" height="10" rx="1.5"/><path d="M6 18h6"/><path d="M9 14v4"/><circle cx="20" cy="9" r="2.5"/><path d="M16.5 9h1"/></svg>
+        <p>"Stel je voor dat je ogen twee webcams zijn. Die webcams zijn supermooi en helemaal niet stuk. Ze maken scherpe filmpjes van alles wat je ziet. De oogzenuw is de kabel die de camera met de computer verbindt. Ook die kabel doet het prima.<br><br>
+        Maar in je hoofd zit de computer (de hersenen). En op die computer zit een heel ingewikkeld programma dat de filmpjes moet afspelen en begrijpen. Bij CVI werkt dat computerprogramma een beetje anders of is het soms een beetje in de war. De computer krijgt het filmpje wel binnen, maar heeft moeite om te snappen wát er precies op de beelden te zien is. De computer moet heel hard werken om te begrijpen of hij nou een hond, een kat of een gezicht ziet."</p>
+      </div>
+
+      <h3 class="sub">Een gesprek opbouwen</h3>
+      <ol class="steps">
+        <li><span class="num">1</span><p>Bereid het gesprek samen voor met ouders, CLB en leersteun: wat vertellen we, en met welke woorden?</p></li>
+        <li><span class="num">2</span><p>Vertrek vanuit de eigen ervaring van de leerling: "Merk je soms dat het druk lijkt op je blad? Vertel eens."</p></li>
+        <li><span class="num">3</span><p>Benoem ook sterktes en talenten — CVI is maar één deel van wie het kind is.</p></li>
+        <li><span class="num">4</span><p>Geef het kind woorden om zelf uit te leggen: "ik zie het wel, maar mijn hoofd heeft er wat langer voor nodig."</p></li>
+        <li><span class="num">5</span><p>Overweeg, in overleg met kind en ouders, een aangepast klasgesprek zodat klasgenoten begripvoller reageren.</p></li>
+      </ol>
+
+      <h3 class="sub">Filmpjes om samen te bekijken</h3>
+      <a class="media-card" href="https://www.youtube.com/watch?v=aM9LjDB_LiA" target="_blank" rel="noopener">
+        <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+        <span class="txt"><strong>CVI bij kinderen — uitleg voor kinderen</strong><span>YouTube · geschikt om samen met de leerling te bekijken</span></span>
+      </a>
+      <a class="media-card" href="https://www.youtube.com/watch?v=eCUycBZWBEE" target="_blank" rel="noopener">
+        <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+        <span class="txt"><strong>CVI in beeld — het verhaal van Christy, Floris en Bertine</strong><span>Koninklijke Visio · voor leerkrachten en ouders</span></span>
+      </a>
+    </section>
+
+    <!-- 3. KNELPUNTEN -->
+    <section class="panel" id="knelpunten">
+      <span class="eyebrow">Herkennen</span>
+      <h2>Op welke vlakken kunnen problemen zijn?</h2>
+      <p class="lead">CVI kan zich op veel verschillende manieren tonen. Onderstaande vlakken komen vaak voor, maar een leerling herkent zich zelden in alles tegelijk.</p>
+
+      <div class="grid">
+        <div class="card"><h4>Visuele aandacht &amp; crowding</h4><p>Moeite om te kiezen waar te kijken tussen veel prikkels; verliest een voorwerp tussen andere voorwerpen op een drukke achtergrond.</p></div>
+        <div class="card"><h4>Ruimtelijke waarneming</h4><p>Moeite met diepte en afstand inschatten; struikelen over hoogteverschillen of drempels.</p></div>
+        <div class="card"><h4>Herkennen van gezichten &amp; objecten</h4><p>Trager of moeilijker herkennen van gezichten, symbolen, letters en cijfers, vooral in een nieuwe context.</p></div>
+        <div class="card"><h4>Visueel werkgeheugen</h4><p>Moeite om een beeld vast te houden of op te roepen in het hoofd. <a href="#" data-jump="werkgeheugen">Meer hierover →</a></p></div>
+        <div class="card"><h4>Oriëntatie &amp; mobiliteit</h4><p>De weg kwijtraken in een gang of op de speelplaats; overzicht verliezen in een druk klaslokaal.</p></div>
+        <div class="card"><h4>Visuomotoriek</h4><p>Moeite met oog-handcoördinatie: precies knippen, mikken bij sport, netjes op de lijn schrijven.</p></div>
+        <div class="card"><h4>Bewegend zien &amp; verwerkingssnelheid</h4><p>Moeite om snel bewegende dingen te volgen, zoals een bal, een filmfragment of scrollende tekst.</p></div>
+        <div class="card"><h4>Gezichtsveld</h4><p>Een deel van het gezichtsveld kan minder scherp zijn, waardoor dingen letterlijk "over het hoofd" worden gezien.</p></div>
+      </div>
+
+      <div class="note">
+        <p><strong>Wisselend functioneren:</strong> hoe goed een leerling op een bepaald moment ziet en verwerkt, hangt sterk af van vermoeidheid, drukte, emoties en vertrouwdheid met de situatie. Dat is geen inconsistentie in gedrag, maar een kenmerk van CVI zelf.</p>
+      </div>
+
+      <h3 class="sub">Bredere gevolgen</h3>
+      <p>Omdat leren op de basisschool voor een groot deel steunt op visuele informatie en symbolen (letters, cijfers, schema's), kunnen leerlingen met CVI moeite hebben met lezen, schrijven en rekenen — ook al is er geen sprake van een op zichzelf staande leerstoornis. Daarnaast voelen kinderen met CVI zich vaak onzekerder of angstiger, en trekken ze zich soms sociaal wat terug, omdat de wereld voor hen minder voorspelbaar aanvoelt.</p>
+    </section>
+
+    <!-- 4. AANPASSINGEN -->
+    <section class="panel" id="aanpassingen">
+      <span class="eyebrow">Praktijk</span>
+      <h2>Redelijke aanpassingen</h2>
+      <p class="lead">Een redelijke aanpassing haalt een drempel weg zodat een leerling volwaardig kan meedoen. Aanpassingen zijn altijd maatwerk — bespreek samen met leerondersteuner, ouders en CLB wat voor déze leerling werkt.</p>
+
+      <h3 class="sub">In de klasomgeving</h3>
+      <table class="compact">
+        <tr><th>Wat</th><th>Waarom</th></tr>
+        <tr><td>Rustige, opgeruimde klas, weinig aan de muren op ooghoogte</td><td>Minder visuele prikkels om tussen te moeten kiezen</td></tr>
+        <tr><td>Vaste zitplaats, dicht bij het bord, weg van raam of doorgang</td><td>Minder afleiding en beweging in het gezichtsveld</td></tr>
+        <tr><td>Egale, voldoende verlichting zonder felle schittering</td><td>Voorkomt extra visuele vermoeidheid</td></tr>
+        <tr><td>Duidelijk contrast voor belangrijke info (bv. bordschrift)</td><td>Maakt het makkelijker om het belangrijkste snel te vinden</td></tr>
+      </table>
+
+      <h3 class="sub">Lesmateriaal &amp; taken</h3>
+      <table class="compact">
+        <tr><td>Eén taak of opdracht per blad of scherm</td><td>Vermindert crowding en keuzestress</td></tr>
+        <tr><td>Grote, eenvoudige letters, veel witruimte rond tekst</td><td>Makkelijker te scannen en te lezen</td></tr>
+        <tr><td>De rest van een bladzijde afdekken met een blad papier</td><td>Focus op precies dat waar het kind mee bezig is</td></tr>
+        <tr><td>Markeren of kleurcoderen van wat belangrijk is</td><td>Stuurt de visuele aandacht gericht</td></tr>
+        <tr><td>Digitale hulpmiddelen: voorlezen, vergroten, tekst-naar-spraak</td><td>Ontlast het visuele verwerkingssysteem</td></tr>
+      </table>
+
+      <h3 class="sub">Tijdens de les</h3>
+      <table class="compact">
+        <tr><td>Mondeling aanvullen wat er te zien is, niet enkel tonen of wijzen</td><td>Compenseert wat het kind mist of trager verwerkt</td></tr>
+        <tr><td>Eén instructie tegelijk geven, in kleine stappen</td><td>Voorkomt overbelasting van het werkgeheugen</td></tr>
+        <tr><td>Extra tijd om te kijken en te verwerken</td><td>Verwerking kost meer tijd bij CVI</td></tr>
+        <tr><td>Vaste routines en voorspelbare lesopbouw</td><td>Minder nood aan opnieuw oriënteren</td></tr>
+        <tr><td>De leerling bij naam aanspreken vóór je iets toont</td><td>Geeft tijd om de aandacht te richten</td></tr>
+      </table>
+
+      <h3 class="sub">Speeltijd, beweging &amp; refter</h3>
+      <table class="compact">
+        <tr><td>Extra begeleiding in drukke, ongestructureerde momenten</td><td>Speelplaats en refter zijn visueel het meest chaotisch</td></tr>
+        <tr><td>Grote, contrasterende ballen en materialen bij bewegen/turnen</td><td>Makkelijker te volgen tijdens beweging</td></tr>
+        <tr><td>Een vast "maatje" bij verplaatsingen door de school</td><td>Ondersteunt oriëntatie zonder de leerling apart te zetten</td></tr>
+        <tr><td>Een rustige plek voorzien bij overprikkeling</td><td>Geeft de mogelijkheid om te herstellen</td></tr>
+      </table>
+
+      <h3 class="sub">Toetsen &amp; evaluatie</h3>
+      <table class="compact">
+        <tr><td>Extra tijd</td><td>Verwerkingstijd ligt hoger</td></tr>
+        <tr><td>Grotere lay-out, minder items per pagina</td><td>Vermindert crowding tijdens een toets</td></tr>
+        <tr><td>Mondelinge overhoring als alternatief waar mogelijk</td><td>Haalt de visuele leesdrempel weg</td></tr>
+        <tr><td>Prikkelarme plaats zonder afleiding</td><td>Ondersteunt concentratie op de taak</td></tr>
+      </table>
+
+      <div class="note">
+        <p><strong>Vlaamse context:</strong> aanpassingen worden afgewogen als "redelijk" op basis van doeltreffendheid en haalbaarheid, in overleg tussen school, ouders, CLB en het leersteuncentrum. Meer over dit kader vind je bij Katholiek Onderwijs Vlaanderen en Klascement/Iedereen telt mee (zie <a href="#" data-jump="bronnen">Links &amp; bronnen</a>).</p>
+      </div>
+
+      <h3 class="sub">Per leerling concreet maken</h3>
+      <p>Welke aanpassingen echt nodig zijn, verschilt van leerling tot leerling. Laat de leerling — samen met jou of de ouders — het <strong>CVI-paspoort</strong> invullen: een invulbaar document waarin het kind zelf aankruist wat helpt, per vak en per moment op school.</p>
+      <button class="media-card" type="button" id="dlPaspoortBtn" style="border:none; width:100%; cursor:pointer; font:inherit; text-align:left;">
+        <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>
+        <span class="txt"><strong>CVI-paspoort downloaden (.docx)</strong><span>Invulbaar Word-document voor de leerling</span></span>
+      </button>
+
+      <h3 class="sub">Een nieuwe aanpassing invoeren: geef ze een eerlijke kans</h3>
+      <p>Zoek aanpassingen zoveel mogelijk sámen met de leerling uit — dat werkt het best. Komt een aanpassing toch van jou of het team opgelegd (de leerling koos ze niet zelf), geef ze dan niet meteen op bij de eerste weerstand of onwennigheid. Nieuw is nu eenmaal even wennen.</p>
+      <ol class="steps">
+        <li><span class="num">1</span><p>Laat de leerling de aanpassing <strong>6 weken</strong> uitproberen vooraleer je ze beoordeelt.</p></li>
+        <li><span class="num">2</span><p>Na <strong>3 weken</strong>: een korte, informele check — hoe gaat het, wat valt op?</p></li>
+        <li><span class="num">3</span><p>Na <strong>6 weken</strong>: evalueer samen met de leerling. Helpt de aanpassing? En wil de leerling ze blijven gebruiken?</p></li>
+        <li><span class="num">4</span><p>Is de motivatie of de wil er op dat moment niet — forceer de aanpassing dan niet verder. Laat de leerling ze niet blijven gebruiken, en zoek samen naar een alternatief.</p></li>
+      </ol>
+    </section>
+
+    <!-- 5. ONDERSTEUNEN -->
+    <section class="panel" id="ondersteuning">
+      <span class="eyebrow">Aanpak</span>
+      <h2>Hoe ondersteun je deze leerlingen?</h2>
+      <p class="lead">Naast concrete aanpassingen maakt de houding van de volwassenen rondom het kind een groot verschil.</p>
+
+      <div class="grid">
+        <div class="card"><h4>Geloof wisselend functioneren</h4><p>Dat het gisteren wél lukte en vandaag niet, is geen aanstellerij maar hoort bij CVI.</p></div>
+        <div class="card"><h4>Benoem zonder oordeel</h4><p>"Ik zie dat dit blad je veel moeite kost" werkt beter dan aandringen of ongeduldig worden.</p></div>
+        <div class="card"><h4>Waardeer inzet, niet enkel resultaat</h4><p>Een taak die er minder af oogt, kan evenveel of meer inspanning hebben gekost.</p></div>
+        <div class="card"><h4>Bouw rustmomenten in</h4><p>Wissel visueel zware taken af met lichtere, minder visuele activiteiten.</p></div>
+      </div>
+
+      <h3 class="sub">Zelfinzicht stimuleren</h3>
+      <p>Help de leerling eigen signalen herkennen en benoemen: "ik ben moe van kijken", "het is te druk voor mij nu". Een leerling die dit zelf kan aangeven, kan mee sturen wanneer een pauze of aanpassing nodig is — dat vergroot zelfstandigheid en zelfvertrouwen.</p>
+
+      <h3 class="sub">Samenwerken rond het kind</h3>
+      <p>CVI-ondersteuning werkt het best als leerkracht, leerondersteuner, ouders, CLB en eventueel een gespecialiseerd centrum op dezelfde lijn zitten. Herbekijk afspraken geregeld: het profiel van een leerling verandert met de leeftijd en de schoolse eisen, dus wat vorig jaar werkte, is dit jaar misschien niet meer voldoende.</p>
+
+      <h3 class="sub">Sociaal-emotionele aandacht</h3>
+      <p>Leerlingen met CVI voelen zich soms onzeker of trekken zich terug, omdat de wereld minder voorspelbaar aanvoelt en ze vaker moeite ervaren met dingen die voor leeftijdsgenoten vanzelfsprekend lijken. Extra aandacht voor sociale contacten en, in overleg, psycho-educatie voor de klasgroep kan begrip en aansluiting bevorderen.</p>
+    </section>
+
+    <!-- 6. WERKGEHEUGEN -->
+    <section class="panel" id="werkgeheugen">
+      <span class="eyebrow">Verdieping</span>
+      <h2>CVI en werkgeheugen</h2>
+      <p class="lead">Het <strong>visueel werkgeheugen</strong> is het vermogen om een beeld dat je net zag even vast te houden en er in je hoofd iets mee te doen — bijvoorbeeld het onthouden, natekenen of ronddraaien van een vorm.</p>
+
+      <p>Bij een zwak visueel werkgeheugen is het moeilijk om je iets voor te stellen, te onthouden waar dingen liggen (bijvoorbeeld de plattegrond van klas of school), of een woordbeeld vast te houden tijdens het lezen of spellen. Voor leerlingen met CVI is dit vaak extra belast, bovenop de moeite die het kost om de visuele informatie zelf al te verwerken.</p>
+
+      <h3 class="sub">Een dubbele belasting</h3>
+      <p>Bij CVI moet het werkgeheugen eigenlijk twee dingen tegelijk doen. Eerst moet het meehelpen om te snappen wát er precies te zien is — iets wat bij de meeste mensen automatisch en moeiteloos gebeurt, maar bij CVI bewuste denkkracht vraagt. Pas daarná, met wat er nog over is aan mentale energie, moet datzelfde werkgeheugen die informatie ook nog vasthouden en ermee aan de slag gaan. Die twee taken na elkaar — eerst ontcijferen, dan pas onthouden — verklaren waarom werkgeheugentaken voor een leerling met CVI zoveel zwaarder wegen dan voor een klasgenoot.</p>
+
+      <div class="analogy">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2a5.5 5.5 0 0 0-4.5 8.7A5 5 0 0 0 6 20h9a5 5 0 0 0 1-9.9A5.5 5.5 0 0 0 9.5 2Z"/><path d="M9 8v8M15 8v8M9 12h6"/></svg>
+        <p>Een leerling zonder CVI die een som van het bord overschrijft, filtert de rest van de klas moeiteloos weg en onthoudt de cijfers vanzelf. Een leerling met CVI moet eerst alle moeite doen om de cijfers te isoleren van de rest van het bord — en tegen de tijd dat dat gelukt is, is er geen "mentale ruimte" meer over om de som zelf te onthouden. Vandaar dat zo'n leerling steeds opnieuw naar het bord moet kijken, niet uit onoplettendheid, maar omdat het ontcijferen zelf al bijna alle energie opslokt.</p>
+      </div>
+
+      <h3 class="sub">Wat dit betekent in de klas</h3>
+      <div class="grid">
+        <div class="card"><h4>Overschrijven van het bord</h4><p>Steeds opnieuw moeten zoeken waar men gebleven was, kost extra tijd en energie.</p></div>
+        <div class="card"><h4>Meerstaps­instructies</h4><p>"Neem je schrift, sla bladzijde 12 op en maak oefening 3" — een stap valt makkelijk weg.</p></div>
+        <div class="card"><h4>Rekenen met visuele voorstellingen</h4><p>Een getallenlijn of meetkundige figuur in het hoofd houden, vraagt extra inspanning.</p></div>
+        <div class="card"><h4>Lezen &amp; spelling</h4><p>Woordbeelden onthouden en teruglezen kost meer moeite en tijd.</p></div>
+        <div class="card"><h4>Oriëntatie in de school</h4><p>De route naar de refter of turnzaal moet soms telkens opnieuw ingeoefend worden.</p></div>
+      </div>
+
+      <h3 class="sub">Hoe je dit ondersteunt</h3>
+      <ol class="steps">
+        <li><span class="num">1</span><p>Splits instructies op in kleine, enkelvoudige stappen en herhaal ze indien nodig.</p></li>
+        <li><span class="num">2</span><p>Combineer visuele met verbale ondersteuning — zeg wat je toont.</p></li>
+        <li><span class="num">3</span><p>Beperk overschrijftaken: geef een kant-en-klare kopie in plaats van van het bord te laten overschrijven.</p></li>
+        <li><span class="num">4</span><p>Werk met geheugensteuntjes: pictogrammen, checklists, een vaste dagplanning.</p></li>
+        <li><span class="num">5</span><p>Behoud vaste routines, zodat minder telkens opnieuw een beroep wordt gedaan op het geheugen.</p></li>
+      </ol>
+    </section>
+
+    <!-- 7. COMORBIDITEIT -->
+    <section class="panel" id="comorbiditeit">
+      <span class="eyebrow">Context</span>
+      <h2>Comorbiditeit bij CVI</h2>
+      <p class="lead">CVI komt zelden alleen voor. Vaak ontstaat het samen met andere gevolgen van dezelfde onderliggende oorzaak, zoals vroeggeboorte of hersenletsel.</p>
+
+      <div class="grid">
+        <div class="card"><h4>Motorische problemen</h4><p>Cerebrale parese en andere motorische beperkingen komen vaker samen voor met CVI.</p><span class="tag">motoriek</span></div>
+        <div class="card"><h4>Epilepsie</h4><p>Kan zowel oorzaak als begeleidend kenmerk zijn, en het visueel functioneren extra beïnvloeden.</p><span class="tag">medisch</span></div>
+        <div class="card"><h4>ADHD</h4><p>Aandachtsproblemen kunnen overlappen met de visuele aandachtsproblemen van CVI, waardoor onderscheid soms lastig is.</p><span class="tag">aandacht</span></div>
+        <div class="card"><h4>Autismespectrum­stoornis</h4><p>Sociale en prikkelverwerkingsmoeilijkheden kunnen samen voorkomen met CVI.</p><span class="tag">ontwikkeling</span></div>
+        <div class="card"><h4>Ontwikkelingsdyspraxie (DCD)</h4><p>Moeite met plannen en coördineren van beweging, deels gekoppeld aan visueel-ruimtelijke verwerking.</p><span class="tag">motoriek</span></div>
+        <div class="card"><h4>Lage-orde visuele problemen</h4><p>Bijziendheid, scheelzien of nystagmus kunnen bovenop CVI voorkomen en het beeld extra bemoeilijken.</p><span class="tag">zicht</span></div>
+        <div class="card"><h4>Leerstoornissen</h4><p>Dyslexie of dyscalculie kunnen samen met CVI voorkomen, los van de visuele verwerkingsproblemen.</p><span class="tag">leren</span></div>
+        <div class="card"><h4>Verstandelijke beperking</h4><p>Komt bij een deel van de kinderen met CVI voor, in wisselende mate.</p><span class="tag">ontwikkeling</span></div>
+      </div>
+
+      <div class="note">
+        <p><strong>Let op overlap:</strong> een leerling die "niet oplet" kan een aandachtsprobleem hebben óf een visuele verwerkingsmoeilijkheid — of allebei. Zorgvuldige diagnostiek door oogarts, orthoptist en neuropsycholoog helpt om dit te ontrafelen. Er bestaat nog relatief weinig onderzoek naar de precieze samenhang tussen CVI en andere ontwikkelingsstoornissen, dus multidisciplinair overleg blijft belangrijk.</p>
+      </div>
+
+      <p>Voor de klaspraktijk betekent dit vooral: zoek samen met CLB en leersteun uit welk gedrag door CVI komt en welk door iets anders, want de juiste aanpak kan verschillen per onderliggende oorzaak.</p>
+    </section>
+
+    <!-- 8. BRONNEN -->
+    <section class="panel" id="bronnen">
+      <span class="eyebrow">Verder lezen &amp; kijken</span>
+      <h2>Links &amp; video's</h2>
+      <p class="lead">Een selectie van betrouwbare, Nederlandstalige bronnen over CVI — voor verdieping en om te delen met collega's of ouders.</p>
+
+      <div class="res-group">
+        <h3>Video's</h3>
+        <a class="media-card" href="https://www.youtube.com/watch?v=aM9LjDB_LiA" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+          <span class="txt"><strong>CVI bij kinderen — uitleg voor kinderen</strong><span>YouTube</span></span>
+        </a>
+        <a class="media-card" href="https://www.youtube.com/watch?v=W52xnrlv2q0" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+          <span class="txt"><strong>CVI bij kinderen — uitleg voor volwassenen</strong><span>YouTube</span></span>
+        </a>
+        <a class="media-card" href="https://www.youtube.com/watch?v=eCUycBZWBEE" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+          <span class="txt"><strong>CVI in beeld — het verhaal van Christy, Floris en Bertine</strong><span>Koninklijke Visio</span></span>
+        </a>
+      </div>
+
+      <div class="res-group">
+        <h3>Websites — wat is CVI &amp; achtergrond</h3>
+        <a class="media-card" href="https://www.visio.org/aandoening-behandeling/cvi-cerebrale-visuele-stoornis" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="txt"><strong>Koninklijke Visio — CVI, cerebrale visuele stoornis</strong><span>visio.org</span></span>
+        </a>
+        <a class="media-card" href="https://kennisportaal.visio.org/documenten/cvi-wat-is-het-en-hoe-ga-je-ermee-om/" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="txt"><strong>Visio Kennisportaal — CVI, wat is het en hoe ga je ermee om</strong><span>kennisportaal.visio.org</span></span>
+        </a>
+        <a class="media-card" href="https://bartimeus.nl/expertise/het-ontwikkelen-van-onze-expertise/cerebrale-visuele-stoornissen-cvi" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="txt"><strong>Bartiméus — cerebrale visuele stoornissen (CVI)</strong><span>bartimeus.nl</span></span>
+        </a>
+        <a class="media-card" href="https://www.eduvip.nl/zien-en-visuele-functies/" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="txt"><strong>eduVIP — zien en visuele functies (achtergrond voor professionals)</strong><span>eduvip.nl</span></span>
+        </a>
+        <a class="media-card" href="https://www.eduvip.nl/onderwerp/themas/slechtziende-leerlingen/cvi-bij-kinderen/" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="txt"><strong>eduVIP — CVI bij kinderen (thema slechtziende leerlingen)</strong><span>eduvip.nl</span></span>
+        </a>
+        <a class="media-card" href="https://kennisoverzien.nl/kennisthemas/cvi-nah" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="txt"><strong>Kennisoverzien — kennisthema CVI &amp; NAH (herkennen, onderzoek, psycho-educatie)</strong><span>kennisoverzien.nl</span></span>
+        </a>
+        <a class="media-card" href="https://www.visio.org/home/webshop/publicaties/cvi-en-nah/cvi-in-beeld/cvi-in-beeld" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>
+          <span class="txt"><strong>Boek "CVI in beeld" (gratis pdf) — Koninklijke Visio</strong><span>visio.org</span></span>
+        </a>
+      </div>
+
+      <div class="res-group">
+        <h3>Praktische documenten</h3>
+        <a class="media-card" href="https://bartimeus.nl/uploads/media/62026446677b8/cvi.pdf?token=/uploads/media/62026446677b8/cvi.pdf" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>
+          <span class="txt"><strong>Bartiméus — Begeleiding van kinderen met CVI in de basisschoolleeftijd (pdf)</strong><span>bartimeus.nl</span></span>
+        </a>
+        <button class="media-card" type="button" id="dlPaspoortBtn2" style="border:none; width:100%; cursor:pointer; font:inherit; text-align:left;">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M5 18c.5-2 2-3 4-3s3.5 1 4 3"/><path d="M14 8h5M14 12h5M14 16h3"/></svg></span>
+          <span class="txt"><strong>Mijn CVI-paspoort — downloaden (.docx)</strong><span>Invulbaar document, in te vullen samen met de leerling</span></span>
+        </button>
+      </div>
+
+      <div class="res-group">
+        <h3>Vlaamse context — redelijke aanpassingen &amp; leersteun</h3>
+        <a class="media-card" href="https://www.klascement.net/iedereenteltmee/thema/inspiratie-redelijke-aanpassingen/" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="txt"><strong>Iedereen telt mee (Klascement) — inspiratie redelijke aanpassingen, incl. CVI-document</strong><span>klascement.net</span></span>
+        </a>
+        <a class="media-card" href="https://pro.katholiekonderwijs.vlaanderen/redelijke-aanpassingen/wat-zijn-redelijke-aanpassingen" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="txt"><strong>Katholiek Onderwijs Vlaanderen — wat zijn redelijke aanpassingen</strong><span>pro.katholiekonderwijs.vlaanderen</span></span>
+        </a>
+      </div>
+
+      <div class="res-group">
+        <h3>Voor verdere professionele diagnostiek</h3>
+        <a class="media-card" href="https://richtlijnendatabase.nl/richtlijn/cerebral_visual_impairment_cvi/neuropsychologisch_onderzoek_bij_cvi.html" target="_blank" rel="noopener">
+          <span class="media-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="txt"><strong>Richtlijnendatabase — neuropsychologisch onderzoek bij CVI</strong><span>richtlijnendatabase.nl</span></span>
+        </a>
+      </div>
+
+      <footer class="appfoot">
+        <p>Deze gids is samengesteld voor educatief gebruik in het lager onderwijs. Elk kind met CVI is anders — gebruik deze informatie als vertrekpunt, en stem de aanpak steeds af met ouders, CLB en leersteun.</p>
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('nav.side button[data-target]');
+  const panels = document.querySelectorAll('section.panel');
+
+  function showSection(id){
+    panels.forEach(p => p.classList.toggle('active', p.id === id));
+    buttons.forEach(b => b.setAttribute('aria-current', b.dataset.target === id ? 'true' : 'false'));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=> showSection(btn.dataset.target));
+  });
+
+  document.querySelectorAll('[data-jump]').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.preventDefault();
+      showSection(el.dataset.jump);
+    });
+  });
+
+  const PASPOORT_DOCX_B64 = "UEsDBBQABgAIAAAAIQAykW9XZgEAAKUFAAATAAgCW0NvbnRlbnRfVHlwZXNdLnhtbCCiBAIooAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC0lMtqwzAQRfeF/oPRtthKuiilxMmij2UbaPoBijRORPVCo7z+vuM4MaUkMTTJxiDP3HvPCDGD0dqabAkRtXcl6xc9loGTXmk3K9nX5C1/ZBkm4ZQw3kHJNoBsNLy9GUw2ATAjtcOSzVMKT5yjnIMVWPgAjiqVj1YkOsYZD0J+ixnw+17vgUvvEriUp9qDDQcvUImFSdnrmn43JBEMsuy5aayzSiZCMFqKRHW+dOpPSr5LKEi57cG5DnhHDYwfTKgrxwN2ug+6mqgVZGMR07uw1MVXPiquvFxYUhanbQ5w+qrSElp97Rail4BId25N0Vas0G7Pf5TDLewUIikvD9Jad0Jg2hjAyxM0vt3xkBIJrgGwc+5EWMH082oUv8w7QSrKnYipgctjtNadEInWADTf/tkcW5tTkdQ5jj4grZX4j7H3e6NW5zRwgJj06VfXJpL12fNBvZIUqAPZfLtkhz8AAAD//wMAUEsDBBQABgAIAAAAIQAekRq37wAAAE4CAAALAAgCX3JlbHMvLnJlbHMgogQCKKAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArJLBasMwDEDvg/2D0b1R2sEYo04vY9DbGNkHCFtJTBPb2GrX/v082NgCXelhR8vS05PQenOcRnXglF3wGpZVDYq9Cdb5XsNb+7x4AJWFvKUxeNZw4gyb5vZm/cojSSnKg4tZFYrPGgaR+IiYzcAT5SpE9uWnC2kiKc/UYySzo55xVdf3mH4zoJkx1dZqSFt7B6o9Rb6GHbrOGX4KZj+xlzMtkI/C3rJdxFTqk7gyjWop9SwabDAvJZyRYqwKGvC80ep6o7+nxYmFLAmhCYkv+3xmXBJa/ueK5hk/Nu8hWbRf4W8bnF1B8wEAAP//AwBQSwMEFAAGAAgAAAAhAFGctY9wPAAAynUEABEAAAB3b3JkL2RvY3VtZW50LnhtbOx93Y7jyJXm/QL7DkRdeG2gXUUG/9vTbfC3u6Zc7ka33QX4LiSFlExRpEBSme288twOZu0de+EZLGbWWGDWXs/uXu2Ngd07v0m/wPgRNk6QokSKVCozWcrO5KkCkpmS4oiMiC++E3H+/uqHX69i6YpleZQmH71QXsovJJZM01mULD568dOfhN+3Xkh5QZMZjdOEffTi5yx/8cOP//2/+6vrD2fpdLNiSSFxEUn+4fV6+tGLi6JYf/jqVT69YCuav1xF0yzN03nxcpquXqXzeTRlr67TbPaKyIosfltn6ZTlOf8+jyZXNH9RiZt+fZq0WUaveWMQqL2aXtCsYF/vZCh3FqK/sl9Zh4LIPQTxJyTKoSj1zqKMV3BXB4K0ewnid3UgSb+fpI6HM+4niRxKMu8nST2UZN1P0sF0Wh1O8HTNEv7mPM1WtOB/ZotXK5otN+vvc8FrWkSTKI6Kn3OZsrEVQ6NkeY874q1qCSt1dmcJ5qtVOmOxOttKST96scmSD6v236/bw61/WLavLnULFp/2tfzr7Ffs6yLOi23b7JS+K5v71cIieu1VxmLej2mSX0TrenVY3Vcaf/NiK+TqWAdcreLt567XyolQ61va/HIYdgJPuf1q7FZxeefHJSryCaMJIuoWp9xC8zu3d7LiM3j3xffqmr3OVU5cfLYCyIEAY8pOJIutDKuS8Wq6QzfIiU6E1VZOOSogJ9p1rHLiGti+mT0Bs82dRBB1ex9wgeZ7svJZMbu4m7jtGL2CtrSgFzSvQVNKnJ+4EGwlansSywkWp9N6PQOZ7G6dptcCf77aG8P14mFA/SRLN+udtOhh0l7vluxrUJ7uIKsC/P4ilD/sZr68oGu+kq+mH75eJGlGJzG/Iw5fiSNQEiMAP/lEhov4lX0tXof5U/0yj+GX2UaCJfHFx1wJnKSzn8N1zd/QPlzTjL7mGNINWbddN3ghXuUUWsCrZvWPv/ohVzhnX3z0QpYDojuaVb/kszndxAW8U/4T37L+PINLvqZT/iT8s3ReMM4ohvziFbxxOeWvXVE+Kad8pWcZvPqqblb+qETcbD+pVW3zGy9vvvaq/nTx8V9+9/d/829/+hW8VpTvlJIPn1mVVc0h4um+Zc88EZ+feLm4TtM4zbZNVdcIrHDbEXU3aB1dI17b75q3r//6x5L31evvf+58+flnn33xkxM6yQg023AD9313kirfuZci8fmoq5cMF/63n/8zvm2SLlImRUtpGV0uP5CuaSGtokvpgsXrQkpXUsGkm4glfEsl3uMfTPjWasE/MJHStcRxnKZxZ7cVk7i6VF83id/x2+Gsbau6DL1S/HzNATz7mpYPyj/gcrzznZz4i0uvbh6wHzNokd/wYRS/8O7ibYUY8aAfvaCbIi0FxWxe3LftJC0K/tj3bJ1Fi4t7f3WU8FnCPn1Y86/u1xwGsNn9k9hjcfyWirGrepSPndI1ctvH7n6/lL0njf/1ozRdbu9UQIH/MY+yvPgiva7uMKb7f4k3vTTerJK99xsvJOmnLt/m1399tf2rvod6In6SRTP4dcGvXEZ56yrch3iexssGzNZaxLZlAdA6RPr+ahraemiHpHz1YKGosRF8fdjf5eTfPnurt+sp2vl+q7e3D159y7T8WXXEtAKkePLDLyqmD8Gja3u+b98Xkfut74PJ/fb3QOWuOXTgfj/kF7OtqGnMaNYGk5irMX83JKERVndQTNsDq3T2+B7OjNuGvlvCPhQ7RIinqSdGNQ+aBKcobqC4ltEzb6W7Elw/j+/omiiHdF2+tk9XP6Z01UE14kmOzG4B4MOewtndMbuf0kTVdJVYge0/aKJW72y/sbyUPZB1Sthf4QOfBIYJN48rPK7wTwY4pumQIfe2w63wb7hShys8rvDbBVZTfdfS4CH3J2poqZ7seidO1Aet8LZuW44PX4UrPK7wTwc4rh+qttm395Qeb4X3abFBJR6X+FoX8R3X8vWHzdS+Jb5cOLvgocpBoD9MAareEdJ7znBJeaAEMxw+Uc70+p7wZPTUxngy+rgno2Ja1p89/QhU8QJHCf0+W0kNgm+B+tSHPOSXB6hPgRYqgViXQcIBKXWSzg5QhNxKSp0S9jDXJeIEUtJDVdcd/72oT6Kjtt2nin/lbd9Vk/K+ei19d8oyNslozKSrKN8wfs2LNM2SKP+eNGEFW4J346w06iVSumCJtEgZHz6W8bc+kFaUZrv3L/gAs4R/ZsJYPOPXPF3lEl8r+OvgYlm2ein5USGtab7m31RIEX+LJiDgpRRk0g0IWjDeeJ5uCsZbF9cpzB3e7vWSf+FCutjEa+kqo3A3tGyaSJebOb8dxnLOnFI6l9INfOvLflXxFo7XPV/zTC980BiewvGlNbvN8S2jsSMTVdXbG9l7T6jqZtbuTFyPrQ5wjr+Ft4B6hdSd3RxuuRK0e7oJm6cZb6KWEKseFgC397D8kqXpPMhgQpcgW2R09WVBs6LC4t7Mn5T4Pd2IT6qlo4GDrZpX40CRpHe0aMyTnvsKktm57gpcXra9vs5YzrIr9uLjHSQBvFccFjD3f9gxxw/UZMW0ZPXgJOShE+g2jbXZVSf5F9x9IXuTbfgaAgsBeBhMokvpMt3A+lK8lP6aiRWDrwuwTCXSn//45z8m9ZoCjZbQmi8unZ2ImjZq2k9K09YMUy+fp/Pluyrgpkl83zKfwvmleMTDL+pTwJM0qSeWuIGOiRWKf4d4vGvbJh7v2rqBx7s1bivehzr0LSr0rcc6tynQ9zvUIRohqksG85F7GF93uAKWr93K19/843+SWorF/q3clei4+nsTcUJLWRRHl0tOaTTOudLNNfRsswRFmg/LivFXWNJBZ6K7EUGjQJAua5pryioiqI0gcDwV6mARXc4qZ1Q+FrDhXMeUFpcMfFYnDPxZj8EILqVUePqjLKpaOiFh0HdcLIQgi+IaMPAaoGq+KTtW37TrnLXjWAOuomQmeHNLpVLEihxwD+/wlaDY5DkcLsHJFZPy9SaOkVLHDifL9RzDGSy65TlRKhzrSgt2E00vCv5bwuHEdVPBsCtWHFVH78CjWhj4jhkijyLwzwl8TZN1RzYVBH4b+BBeCRwqDDgxTRYiCgyZcuSAIXziBoaPiucBYK5YFkcsL+2iwmy5jtlS2CxAHY3ZzUBUqeuuaeph3/5fCEGqROQPjHzD1Ykt+6gjHyBfHDvx3SbfY3KNWJqwa7ZgfHspQZ4prjKnc6nI6DqGFCRIn6MGkW5brknswWz1z4g+UxaDgSNNbhiYP/g4wrktWD+WTFDpB9JNCkaRGZzaMBaLI90jIUEVpZZEdTgUpqNqvmI6DxqKE5yAFHKCE5Bu6jrx1PeeOeIxfDheV15cLILFsHL4+lC4udQ+L1t/l29+8fuOAa1HEJ01Tm2MzhpP0y1aNw3bshS/fBXdou/f+mm6Rfte4IRk25N3dovujMS5U6xOl4gTFBvTtgK+LR0sM8QdvFj7RsN2XcMztnR34MXa7aNbMWKfk2YnObV6QiWKYliDmeefTk+cpnfJhm06tt63wp3WP/cPsGrdjKrZsudCZw15M2u6YG7G6NIVrtK33gbRTEv3jMGCCtAHfKd+Ekl6y9XPxnztubHHdwIXURhsF23xoTSLiirjGuRe46MoYjSq1GsnLEeqZXqBJVdqxvPaWbi8R2AbUcaetOJYqgCWCzaZbN+rY1jEGa0INamdhIRjEFfhLte7dHa8i8uAlt0AzLjMSXT58oSeJ44faGHwsLXlWM9vMQgL9x4G2wNxFwwOcjjwl9/98n9Ix44HjkCKeLqzdXPeu5k6DmrvZsRr+9PBS5Mi44r8+4D6A+6rB+rfoav1D8QZR7bJC743lihY2LNFliazzumFm2DcBD+pTfDAEQs6V5HcgPTtMWpsoOELz+yHNHn7jqv4grHxzH7HtgFoqvM5uFLueEuYu4WuBTpZB4uJXkbgjAI4imUbqtHrqLBFydiA42+4ViE8k6eVwrr1SS7Ykv8B0Qp0HbGsHz5wKaXBUx8lTdPVHVd7Enk2EPvPB/uaZtqO5ZwhU/CTI006n7HlJKYzOHaowhAqTxGIUmDZhJMpeoqMHECyo5muHDzMPeF5AihmLL+OLm/AS2RVpX3I2ILFR45F706cauBYCgn6Dk6FECROxP3AuDcU3yaOcob0nE8K9z+GsCNBjxzmNVsuSj2aj6jYcwKpIm2OGz4qCf3QQ/gc0ubWzLDabLLdOc2JXpTws7Pz9vve8yxZNoOevhdCkDER8gNDXudaMnEczCjThPxbCHfPyurXLAOLcZSA7/TyfnUUEDHP6HCGmKrrWDYi5oAk0/WCZZtoxYFS0DnrKl/YJMaSbjr6OPTMQFUG6+Mn5P3x6//2GN4fP4IEBa2vPeb6UQ5mPXroVXFqY/SqeFZeFYrmqqan9SVDrrGBWjvqIIPqIIZMVBcjIZss9glLUraQYiCzyi219G7tV0QQLiOAi+lrhiVr6EvRhgsUE2BxBZiMwc9ozxW8HzZwKaXA0x43BRElNFwHD7YQ82elSM3VHNnH5FRNzMM2/SZNEjbJohiSa6xFRroyW/JkE0GWOlgSIjzmGjd+DNlyVBezOrbw84WwA3G1MhHlfKr8VAkES1XoWVA6EHGGRCW62afkCyFInAj8oZVlxyReqMF4IvB3wK8sQos4Wq1Efqp0veZfFNMl7i/HDhmiWIbp+Oiv24TMz1g8l1YipngZQQZH6Rp4UsQGgz8SGIzKzMgiT6pI9Hhgh+hiz5KTDscBjsVca7jqzE/IbPS7//4YZqM3Mds0Iy2Om43OcVM9EcNij7OJ16toNuu0TNZzCo1ZpzZGY9bzKmpmuYqjWhgijNrTObUnRbVl10Sn7eZ3iJO6K75igNMZZ9k6y2OyLbsifXdy9bLMgZHOoJzn+nv9mhMiaQRIUhXPDQ11sHRFzwRJQkut4xxmdJFPL9iK9oMFLmVbeMajnEl023c1Aw/pEOnnRLqu+K7qIWe2kO4yKLaSQa2Vba5kacGhni0Zg4osrCjJFHly1OgxiO0ZjtzntbeFykh5ciVlIq84/BC1/1I4+QbO5Lv1ZBDWNB0jkM0Qw4MR9+fEPQmUYMhCAc8K93VQ45Ku8yJdgnPIhC4vGZLlqEGjG7bq+DrGOzVB8wkTmiTUUymiNeS9Tcti2Vm6KUSp7Ks0PsWHsmShw343HFVzZffRY6B6OukBA/Gr//MYtqqfQNHV0im8txhjPRRoAzq1MdqAnpUNiJi+7fsW3Axq5qhkHI7d+1EyZGJ4dqBjhEaTs4Kvi4xKolx4pV2IjCOXTJRFFAkvRep9rC6MGHqheDKx9BC90JoYqjy2lxvhsV0iBUIgwJvzgrYrHjRgA5dSCjztUd5UHDlQdQfAhLyJmD8X5g1P4btEBwOBW7zJh7GosP6BNKOQFDqX4k2U8z0ueE4kZUa8MgUeuk2MG0Sqq9k+UfBYuA2iRMpZlIC6Cc5Hs7KuE0dODhW7CxHpdILyeQcWlVXdChylL2hTCEEWxQVg4AWABMRzHQe9KQ4XgDXd3DApoWLzyVEfAWGWJ6gFpVikZNzAkXVZtl0BkfsDp3pn+401YZTLcNeXKpbmuYN5bzyhKJ8//ONjWE6CFrv3PPrjx/hsk/SuY9a1MtXzCa07pzZG686zsu6orqvpto/p6lBNOKeaoMiaFhAVT6kO9WsWQXj0lrguUrbExHUInHq99h3Ddn1oi8DZAecdi5JoUcfBRWXuAJFKAMJ8ZlGvCliBBy6lLHjm45Rpaa5qGX2lpIQQpExE/uCUGVg2pt/qosxlui4YH6A0LasYQYhPvImweNG4EaMZjiUHHroQNRHzljOjcOvPNosyT92MSbNssxTl/opiKMuNa8qeYgOakCYR9OcCvWp5sqK4WOjzkCZBA+aqMOjEENrDUX+5mYPf4IoxcINAuhw3clxT82XrYbki7mq6MUM3VInqDwXXJ2S6+dd/egzTjcuuQUOeNYP4vrUGnKo26Xfoav0D2MZzRb9jmaonF9pxTm2MdpznlalNsTQ5tPpOB2psoLaNOsOAOoOhhaZmmVhToaVtiygdSC4qNG3+xzpO12i8GTlaTN9RZcXxEC0NtHyVppkw1UQL6UYUnofdacZWaxbnsD+9SNNFwaD07vQiur2GKPzs7Mu9odBthfhub2I8IQT5EleAoVcAomuOa+EK0FwBqoi8gkM+FejPExZLk+1WVcr5ShCz4pJhDaJx40fVNT30NTzdbeLnNVvx3adwc1gxUVOBM+XmuihTBKeTvKBLzqWDMCcJFV2zeqvBCCHInIj8gZGvqabs+xqG5DWR/xmbM4hi54MnUk2VRLpKVywpPpBEUGuU7Ay8SJ+jBpHuBoZuhw87rrmriUcPLKIryhhNPH/4349h4vlUOAonTyVGp7TtpFn05/+ZFLSI0MCDBh408BwcWGmG7qhyn/5TYwPVbtQYhlS7LSOwXePpeB0LnMOhUcZmn9MFczNGl+X8O4tC/mXB2CznGvcNi+dc7y6Tvy7YJNtEGL4zegXc0Dw7MDAjW6fGynWMfL1JoA5ouWldUK7gp3NpyVHdjxy4lILggY+zaBBoxOityyqEIIsi7IeGvUM810en5Bbs37Ik51iHY+uLTQKxCCvphi3A4Q+Ks96I0+wJW2QpOxqVgBgaAYZkhUNFt2A8EUM7DO2KQopEwPlhVchhiFMOiWr1rmBCCBIngn5g0JuKS3zZwLpcLdAfZAFPIra55rvNTbQqa43EIq1pxzkwMufoQKSGqhL457X6gGjFcQcLvn1CVp9f/99HqWbDphcJF7ZoGVCO233K1aAeQzSvnNoYzSvPyrwihw5RVQv1W6Tmc1IzCTWLON7DYm6fn377TpwHi+rMoNwWdBLzX9O5NE1X602Boepj12gDO5DNAHMhtVVAqP8UUzCgwDFQzG6GOv7RZMVRSF/cghCC9Ig4HxjnumeHgYN1OFo4f53cpODhu/X6Leu+cXqcp0WK1DhuavQDLTQ9jMhuQkZUNAe7Ik3WNAerIx9GyBGaTy9YthqGJC1LsxSzr2iIEIIkiYgfmiR9Ww4cD5XhJuI/yVK+UQRDSMGv+al4R8iMADKKa7mOrz3MrHhXi4gRGIZPPJhED/5SIb3CxXprEdmaQEjDBFLO7gM1wXZlT5YHO3jquxnStsfsQzoSoxl1rS6GC/8PVpfT1GOoR0fBBTiXoETdKrrk0I/XRZVI/yYCB8P8m1/8vmMZqAcPTSGnNkZTyOOaQsS0rD97B5tHICuu0lvkrgbBt0Bf7UNeD/meNodc2/N9+77Q2299H/Dtt78H/HbN2yScX8y2oqYxo1kbNWJSxvxd3wuckGx7sj2wyi3UDSv78aEHW/zhJ/Yw1yXiBPaWPU8NdHMwb9qtp4A7E9f7DKbtuoZnbJmuEnRIhkYXGfbFRXaSU0v1J5pJiNBLR9YTp6lcJpEtTSYPK+N5gsrV0nK6B0tTbEUN7ceYthDvsO1XMXDVYO32cJ2DtXWxUZsuNu2xu4uLzaRcJe6woRQaNryyp/Jtte5a5VMl6R0tGvOk577uGu/8gLvqmc2lKgpK6SS67FNCW/PY0xTfM5+ltg7Z3yQWL6UruhTJyEXuCikvoJY0S5YsZvy1si47xAnE60uWv5TeZJsoh+M86ZpWeW4u040oklW8PKFLZd1VA284d/In45/2zX/9h8dwT3sX5cvN3dJObwcON2S4IXtSG7KBfdM0W5NdlUDPo10BD0kPx+79HJIaxNINA33TWkQW/PmPiZTzrl+zTFoy/kPkrp1AIaXv8i8tJDpfsBlbFt/rUENEbyOARgEglXhaaAQY7N8E0BdsyZIV5epwRGkMZ/IQvwgH82u6PJoiAy6lEHjYo5ypBnagOi4G+iPkzwl5nRBdk4PBdpXPBPJedDkHa1zpq8aSHPJ7gOfaHPI6S0twzkGyHDVyTEc1LeL2bXK2MBkbcr5iLK6jejfCcQ3yoaer1UBEaaiubWs2enYj3M9KlBCUrKKbagvukM0jK/Xj6UWUYL7mcaOEBK6iExsrWLdQ0kh/UfIh7B8nbAlGomGI0Qwc2zBs9OZGyJ8T8oZimYRo0BYhv4N8FRHMx47DHaOAESocFIql2r6L7NiCisgIl6bZhG8dZxLLEkrzpmtMFyWWRHPYyZrqy6EXDKaoP6E8Pn/3Hx/FUYJlfNz6yiEM5NU0fBWH7777rMveVc8q9N44tTF6bzwv7w3iuZ5hY+EGVI7OqRxpqkUU08VKo4fK0WzDF0jhTlpVSCvK8mhLJtG50Jr4mtmvMCF8RgAfU/Z1nVjou9GEz89YPBdh1CLZ9CUknK0KDkLS9mHP3yyNv6ECopA3EfjnAr4SWEEYomGqBXzgzXkUr9Yc81FS55qHEI06AdEVV5WrdQHrdI8bRUYQGppi+4iiBopeJ/M0W8GhDoBoGbMoYVJebJZHEXMH0iSOY3tGb4FXIQRJE+E+9GbTM/wgDAKEewPub9MENprJokWZ+fQii+aF2IMiUY4aOapsO5rv4zFNS91seHhEkNBnaP8OwzNcK1SQKhHwZ6XKQFN8FVPatgEPxYoozQqR9H13QlvGBmAJI0SNZwcWKphN1HyVUTh3LU9f8wKCaRLBmhBiM4Pcl7dvK0sGOuxyU9c9Q1fGWMDpN799DMePHx1k6z/u7FEOZj166GBxamN0sHhWDhaG6auGrWF6DFRJzqmSmBpXSFwNj7ibLAaKfMxYfh1d3rAMEnrR+YwtJzGd9asiCJgRAEZWdBL6JurwTcCIPPV1lnrY/V5BzO91VJRhv/2ogUspBB72KEfKXih7hoZOiAj5c0Je1UxHVwlGaDQhX9ZpuwHrUFZ7TEgsKwP8kSZHjRld9TViqpgI41CvZPM5Sz6QpmlSZHxTmokDYjq94My5yDiaBqFKRXM9rtgDnpAqEfbngr3shqrvYEnTFuwhO7QoYyrNIMVzxFY0mVXFXZAoR40YohPFNocrA/GMiDLeRDknxUnKjvgX3YETTU0OnUDG7SMi/KwID1SLkADaIsJ3CH+TZkXtNlz53m+TESMnjhoxqmMHjhMgJ7Y4seFOKI5b27b2LmosCeewlxXL1nzZHGxduq9rRE+XnNLtH3/zT79qdfDZHS3+7U+/egw/iy/XXKFoR/iiq0Vfa3S1QFeL+mxSDwxZs3AfgFrNWfcBsuwrhlNNxieg1QicMzikYrPP6YK5GaPLcv6dJ1teCoOcbLOsL8DE/MG+V3Vpbu5XgBBWY9gsKMQJDB+ts03wvIGIA6jNKK1SFu3jZaAYXc03HcMPerpdCEESRbQPjHZT02yieX3TrnPWjgDtP64SQJVOVxVvFqysNwr5ZiHbDXovIlnqih44DiaEasJn72QNGBO0zVk0LdgwbotqqBq+4fb5WAshSJWI9YGxLsvE1nzfRqw3sL63q9wan64YfyVGn8WRA0ZzbU/xQzQ7NQHzxUYkRyzYap0Owocm8XTX4HMF+RDhfU7d17cC3+ybdp2zdgTw3hoShT9yGjOsToKg2bOVBYober1r9RYhYwNNuzoJ3zXeSo0l4Rx2MTFkR7fUwfbkTyhFxa//16PUJil3APn0gjYryqD7RF9rdJ9A94laj/I0M+xPqVNjA9V31EQG1ERMPTACM8SIwkNNZM8lYp4WaUdqc5GkeRuk26+pIJDGsA82+EZY8dBhogmkT1khMYjCFYr9NcvWJ+r18LOz0/a3UZarG5bddxYvhCBnItQHhjoJbcUJsLZoC+rAmcJJYutauBSxSDdRgtQ4arzIJCChY+NpVwsvjcAjAEwSsc11hSERiHQ0ufFdiFLWdF3tdZIWQpAoEfgDA18jpmPLOhJlE/hbX4krumSZdMGyC4puEqM/iCFhaNk65v5vkSSkdooghXnlfxtHl3lZCEBk/x+EHomtuqZO+mxFQgjSI0J+aL04cExi2nj22oT8T6MiZqIsFteJr9LNjMNfKiiNkSFHDRfVdwwiW1gOqwmXRpCK2EGyg1iVW1my5J7DPjds2ZHNYLA+f4xsFn/53W//ttXfo0lnAcUEL6+wdMiJrdEhAx0y6kQ+umk6hozxRajlnPXMTPYDL0Q7ch+TgSP1gom9PxQxiy4TPDob+8Yg8HXVEzoJQmYHmZ/wbhRwOSnuAC5lQ3jA49Yk1yWy4/T1txCCzIgwHxjmxCGOrBGMvG3C3I+WYEZK5zUtljXkL+cLlrEIuXHcoLGCQA+eUHq0R0r6WkKmfVJyX4aERIjE1PpinoUQZEgE+8Bg1y0tsFUPGbIFdq4GZxsIt2cfcH2Y0+ImWnGl+Jply3V8rAwComYMqLEtyyBBgKg5QE1e0DXfRK5jWgbmCi9FUVRgEJpUZZOvV7250oUQpEkE/MCA11zFUgnpm3ads3ZshuSycgjmOkTwtP0UHc30VRXGE8GzAw/UohNpK26iJAGfxQclr5BJ4ISOP9iu/Qklr/jNPz+Go8RPUla0y+sed5M4x21195G0osvOc4p6MqHPxqmN0WfjWflsEE/2bWKizwbqROfUiWTX0QNXUXqmXeesHYFO9EmWcrWiLpCAm4ju1mPcRJiq6cha3zq9RcfYAPNVRiHSKaZFlQjvtFKE8LOzy/aZUfZcEtgwWsiMCPRzAV0JXdsOML1UC+hvIHEUUOM2VzqW6EW4wCodKqrjmahINuHSMOBS3lkFk8CGWwxTScSw5UA30Z8RwX5esPueoZgyFkZogb12zUIyHDc+VCNwNRO9mQ7JkM5nbAnnKOC9SOeVAyPLVgPtFlU3JLpm9oX9CiHIiIj4gRFvGJpmawG0RcTvEP82TSARcSJyYuylIBY+y/Pilgh/RM4YDlRlRdbsECtQtpATQZ116ao8V+VDCP6Lx+0PFUuW3HPY0bpjh4GuDKaUPCHPjF/++jE8Mz7dRDk4are+GTNYdLdGbwj0hqjN0qbmO56LUUioi5xTF9FUovlmgOmem0S2d4gtQdSRdANqfVa6W68ziOKN8369BKEzBjXeND3XUzFatwmdd1z/4+iBpK+LlM2kOJpeDBOBpJheqKghFs1FnJ+VIu3AIiqBtojzJkVeUUjvnK5YUlS5a2Z0gbQ4argYtm0ZgY4aZRMub0R9nTXd3LBcKjZ5zpJjtXbuQIuabmpuoKAfPeL8rOpvoAa+TzDDcxPnn27itTD4RGxFk5lUXGwi3CmOGyqa55oBMTBNaBMqb2nBsojSeJfnRQLLzxXLbmDTeFo2dPjZ2YMNncQwVS9EikTcnxP3xHECzXZQFW7ivpWsBslx1CAxXc23AgdraR2C5ILTY5LAj4V0TQspWkqrlBXSLD3BdbBkm8P+Vi3bdTV9sLCFx6kS8g+/afX1WKqEfM5XzIR39CmP//jZL75DV+sfSGm2oEmU0yLqigGp5yn6fpzaGH0/npXvhxqofuD3RljX2MDtCWpeQx5LWIaiuViKofkdQvOa0QXEaKzoKcVLESwjAItu2qqsaxgcfwiWXZbmD4RFuHKZEjlo8/UmPlovGy6lLHjm46d4hhLovh70DIEQgjSJyB8Y+Ybl6aZhIfKbyH/HoiRabAG+yz4rju4nlCJhjhs2UI/R1hR0jzwkTAhwmlGoAlRAdlAOm6FytOuh4pq9Z3tCCDIkQn1gqPNpJ/uOC+OJUN9B/dPd8T0H/TKLLhdY/nLsrKjJqmIbBKHSgMqXBV1XG0b4DWJIB9o0arIcyrbcp70LIUiJiPOBca7oCjFdH5OmNnEO2m8RrVgmLdgk20RHUY5AGQFQZIUYtoZuxC2gCDfiSXQpknBHyZouIagO/IpX0WUiTVLG/y7oEc/iiiNL5jnsd8X1bTdwBkto94RyY/zLnx6laskmS55K0ZJXImqTrsSJHpPS9VXKZm2nk3K21dMLvTdObYzeG8/Ke8NQHV037b4tXY0N3GGg4jSk4uSammYaeOjWpNlAZKTdREXMFhBNAocK4C8rlCnIKJZEbHPNOY3NIQITo5VHjiIjUG0VQzRaKPpiA7lvpIKt1mk/QuBSNoAHO06Soed6Su+5pxCCJInwHhjeuq34Bhku2OG5kCTnwTmLF0x4Ns6YNKExEuG4kWLqiq2FiJQTvgPg0/qOex5jnYRW4VN5yvd1HhwN8sTSitLikkEG+xVjkMJe6M8D2eh0x7d8zYZZhsoBLnnnWvJMwzNc4vRNu85Z+6hLnjgpY5CIks0+pwvmZowuy/l3zgzdK5bk4PY9lybsmi1K95ba/zPiW22orY76xKjBpYaebNsehnU3IbRNLFslzYPKSRxNkDkvZrcb8+BnZ8/td7wcQrlWzJKJeD8n3jXXkC3LQse2Jt5bdvx8ekELUTCYQmGovKAJEuW4gaMrhuKraMdpAefzNI+KiF0xidJkBe4HoGjeypAl7xz2MjE83wudwYK4npC7yx8exd3lyzXfBBwUhjx+cFEOaD2C6FFyamP0KHlWHiWKrll6v/NwjQ1U4VETGVKFlx3VVnTcsjeZ7KAWTCoy3edAcGWBx36tBHEzBg0+kD1Vs7D28SFuynQgAipgQeoHClzKdvB8xw+4HEW3VB8PuBDl50S5ooZW6IXQFlG+Q7m/iaDeMYQJ0Hm+ziChgUjhLU68OPLRsWTk7Eg4O9oBHgw3cSMOhnnPg0vyVRaxZPbdKPkeeFZciODnpLSw8r+vwOqaDEOdvhVapFfDF0KQOnEJGHgJMAyTrwEOFjxvLgGfrYX9V7pmYBG6phzznDa3W0vxVs5H9ojWjOgZAXrkUA5s3YHxRPTs0NPypKBxLjROTpizbLOUrvlAD7PflDVTIa7cF6EuhCBpIuwHhr2mW5aj65hBpAn7ygdxzmJQjwXUBV1CrWEkylEjhhiq5+lmgIhpIOZnLJ5Lq1TkoIvYjVA1RS2ZWdpVjqNJkCXtHPa1rFk+CYZT6Z+QP8V/+bvH8Kf4aVRUNbNa340OFd2t0aECHSp2wW1aQGQbbgZVeFRIDsfu/SgkqqmpfOJhTGWTyr6iEC50xek9qc++CglyAlJ+XbAJ22SYF3Dsyryn2LLpY9WFJnaaxYkgimDGINsN6Ib9iIFLKQAe9ChVanqoaK6H3hUI93PC3XA1TbGwvFIH3KuSSnxLm3CO3IsYvBX2iJwxEGVgqF6AGeXbyBF54IQRtfKyqBK/CRdeDqgJW4LX0hE98w6sqXtcVXGdvqNHIQRZE7E/MPZ1LTSIbqPHfhP7kL2uNAtfslxkgLyJcEM5cqzIRPYtR8VMj02shGmR/ocSJBQSugxIiprru6GjoOMEAv2cQNd8z9cM7emkdTrfVnICSZpYBA4UUNcatOJ0zT8fQ1Kpssz1zv0Y+XLUMNJN2Q8cgvvKFoz284uLOBeOnCzdtDI0dnFmyUQdPa0oRqBqg5mJnlIpln9+lNwUlO8NOmrMHXemOMet9WTfjBJpkaWs66ivnlPo3HFqY3TueF7OHbJh+WaA2TJQPzqnfmQaik0ULHrc/I7SQL2LCS4oXWLpYwTMDIJPSShbNpp4m4B5J/TQej9eWnv7tL0KL3Apm8NjHmVHRQltWbGCnl4XQpAdEewDg91QVNkyfcyJ0wT7m5hFSQVvsE3xjV2ZQkq4cvGXjx0jIHBGABzF9y3DJNAWgbMDzmdrYaK64DvNrc9wxAA+ohyywJN0Ew0T8Ks7jkN8W+0ZAiEEKRORPzTyLdc35eFSFD8T5G8T5fDBK0ufs00mwvyv6fSiwF3lyFGjGrYp6wrG2DRRE/Bh5BvKK06UYN4F90c6Y8lQrh1mqJqh3qulCCFIkQj2gcGu+Y6qGgb6OzbB3pWDEWlx1EiRbcO1NSy/1UJKoxxPuo7THCrZwdlLtrmJ7u/CATkufc0c7LjrCblw/PJfHsOF403G+2XB+GLHlq1v/5b6cHyHrtY/kOCG2VLsYTomWz270Jnj1MbozPGsnDlM1ZRVR8x03FigunQ4du/p7E11nUDvPfLtnLUjUJe6MnWUWWqjJdRlA9/X8jxugjuOse84NFkPNRnzVTYh9GXB9b3rFMZTJHRP0gLqGuaQ5ybbREMdyBGiEt/VnZ7eF0KQNxH0A4NeVU07VO0AQd8AfTP5QEJFVmpx+i6s2II9k0KsCsiaowaQYVmqp6sIoCaAfhyxQrpi2TqOphdlcncGFi0m8Tdy6YYtjvoT34E4zcDRNV3tixYVQpA4EfdDbzg1RQ/kAJ09mrj/qkxDsNyU9Y/YnGEg8tihQgxD0YmJ1YNaOmbp4VGplBPG4pl0ASc1g9Ci5tuK7Rl9bjVCCNIiYn1orOu6rxMMqmthHRJaRQu+i1ytU2TDUSNEtlTHsX1My9FEyFtR3+QmKsBI0YyqyQtKbyfFkmoO+9swiC17D8xDXb0jpFfPt956dmxdOUjDlaO8xQP/t9APZNN/f5lCqpshbb+S/aGJxHBEXbPEcOH/wSw5aQTd6LLc3FMo8ATF3OJ1AS7f3/zi9x2jVw8Xukqc2hhdJR7XVUJMy/qzp/tEKMRWDC/s2wDVIPgW6OJ9yOvRNE6bQ67t+b59X+jtt74P+Pbb3wN+u+ZtjSO/mG1FTWNGszZqxKSM+bu+Fzgh2fZke2CVW/QUWMuPDz14ER5+Yg9zXSJOUFUU1Q/cwO/L/yjdk63W7qzUVu4xmLbrGp6x5bZK0CH9GV301+fY10lOLSVC1TxPDipcj6knTlOyTFn2PVV/mPvNCUpWS6/pHizdlV3V6y0W9T4HC5b4bb+KgasGa6d9dw7W1jlYLZeCrUbZHru7OAdPylXiDlsBa/vKnpInXttX8jRJesfiZdPRuufO7uqy+4D76pnPfN+wpjkMEZyyRckMDLfJpoC9eCScn5ZcSfjhCQuAbiuhTozBnGO+TYq7HxV843WZNLur8g6DDpJuWDx/Kb3JNlEuXodyT8IOfpluJMjDV7w8oQ+J4jiKEo4xTeK//v1j+Ni/5YP6PoA6vG+9qOmwQ2TnZMLtIm4Xn9R2cfAamMSWfQUdHfC8+pzn1YpmhrKuPB3PeoFzyIeesdnndMHcjNFlOf/OXfKrPMOeRUyC6vZSVJZpgDPRDoYTI4CgGofXoBkS3ZKDJwOq80DnZ8JZkA8d1wMvN3Nwt18xxqGUSTcpIFqaZZslRxbLig1E/vbDCC6lVHj648ezgWf5houuErgGnHMN0L3AUjxvsNPVZ7IGvGXCaAgB/QspoVTUZ5iwa7aATf7RPSIy6HjQo4WOblsK5idtoscXDLpNkDHh41r5VAzDlKpne6GPiRUR62fdgtqBougmBnc3sf6ORUm0kPL1Bup/1blUb2AJQHYcNWIMV5Yd14O2iJgdYuBoRpgauDYpXAvnLJbKCDW+1QRX/IzS1a1UWRLQYa9rsmrYzuD+EtArdzJw9XTRKcPw8V9+99v/1+rxs9vL/u1Pv3oMc5n/XqzawxvLYPeTrhbsik+KjrlaT060lJ3aGC1lz8pSpiqBbloy1i1GpeucSpds+6ETEjySaNLq20ic3F/x0YwYZH3cuhatNkeDHREzY9io6FpoPCXr8vk2Kul6wbJNtJqJY7x+nMClbAaPd5QYiRyalq7h+R2C/Jwg11zVVQMHEwAcgjzbQGAwky5StoRUU1WtB6iOcljeGulxbMhRHT/k0xhzMh4iZ8k3oXBqt45pspTofMFmbFnUZThnaSuv+H0505RDxQqdvtAfIQQ5E5E/MPJ14snE9aEtIn8P+fM5YD9msHds5QkA37Alk9a0yFLMOjV66lR03zEtpM4mgN7SgmURpXGrYHWJo1sZs+Shw942A6LIHhlMxX9CsV3/+W8fw1j1owMr/7fWXlUWTlmweBN1HWPUMwrtVac2RnvVs7JXybbvKrLalxKqxgZuMVBDGnKLofmeQlQAPGpIO2Z1RBT8hGYMbFbCO6jb0aLSjBArI8CKYrsq8VUM1mhi5RPYQMw5gzAp5lpeWSGFo2YSR8nsKGrgUgqBhz1Kj4br2n4QojsHQv6sBwiabP9/9q5mt3HkCL8Kc5sAgwGb7OZPDhvwdzMYbHaQGWyA3CipLdGi2AJJ2VmfggB5gVxyyS1AgDxDjnmTfZJ0NSXZpERZtjiyLdbOArJssUV299dfdVfVV7oVoWu6CfmHXisVSwvJJllymyQpcuSgAcNc5sZu5zZmg44hAmYulhWXAySEYkioGySWy56yskzKvJjpKAyCcD/v9tELGJHPgHB/CPda6p23fFNw9lnnLU95Lg7mYyJ4BgAem4SGw9zetPAuBDzrWOHaV6Dq7/G81BaCp1l6PedalRxTb7Omot1ON3TbCnW9NwPlZfKz/vHXVocPJT/rx2Ka5GmZVOkbSdSqHV+Ljcd1z7zdTlT0fR17Mfq+Lsr3JZdKxyUUxZfQ/jqn/aW7xHKpB9ei/XVPsV/WWhJy8LahQe+1mQpFVx4xOPHbw2OqnxE6g4AONZju0Aj3/U3ofIKYVEjh2OixVFyDwT0YiQov9fXwnAeJkup6TPTOFUs1gkSJaO8Z7SbxXcNxYTwR7fdoh0P9LBnxOoxWxaPDwf6VqASQpxJiGiXz6+ZOFclyaPAxbGa5doRxIy34/O8/uQYBIpIlpxzO9gA1VXLF952SPJ0sTc+i1Dcx0RnRfk60kyAOPcuGaxHtTbLcqhnwbeYm5DwjPQ4aMNSN5NQ1MGSkCZg/8eyqtiE3m8lFMp/XPDlf5bnaXRarKZQ0O8EfZlKP+RGJ+ur9N5O09cs///YSDqyvglftogWv3HnF5TWrHY9bPcm2swqdV8dejM6ri3JeQTiBo9tvobAzWk2XYzUxZvs0droCPvfO2iFsM/5cFYkKGlIx6UpHCRi32z5CtAwALbblWQHFE+wWWr4vhLTGuZbxSr6W61pbhQabdHBdLesKIlnSj/SgFRNKfLfLa6gaQapE8PcMftMOQ4NuJiOCfw3+n4oEanxnSQVRHkIUGb/DmPShY8UNmOdGqF/dMivvEx7fa4nsLMmONUn2Q4xE90Nmd6kwqEaQGBHsfVvFxKaO6aH4RxPsnzKe5mAWq51jrWewTFZ3vDyi5iwCZwDAIWHkG8zxEDgN4PxYRwwnqu66tkjyVO4lKwGuqtuk0tK5dkrmFol0x7et3mJO35C84N//+yKuKj6e5bKx6ZNyreoh3Y4h+oWOvRj9QhflF2IeseOAoE2Ppsk5TRMa2yQIUdCvxWWwga+SUcZV1NlYLJarSiWZj+Q2HmtsDN6b6oeeoTM06NsW4Lys2ifE2rtyWSTJvBRX1W1S8F93Ywde6qbgkQ8fgVHToyZFASME/jmBbzEjssIQExmbwP+Y3wmxqI++NoU2EqWJq87Dar9wOZ7x4kClbATQEOxNYrphzNBh1ATQfYmNG15MIczigIn5BJqkzGOxrUcd3a0aQZpElPeMcsMzzZiGaB83Uf71Z5C7bqr8SVYs0usb3FIOHTIWZQaNToPM+i+bb9xSRb0A736p7uum58YwiV7UR9IBqmOAC+p2/2phdCjqdoFYLFZ5On5r8nartMr4PqH/7TRFN9CxF6Mb6KLcQCb1fCOysXAFWh/ntT5cP2Sobdf8ju8+iQLE7CYruUbWasJyvayK1VgSLuYIDRsy1GSx4QQImSZkIjmMFWjXl9LU57kEj9zkLpNSmwN+cu1dnvJqK+HTjzPIdhkNApTuwRXgzKRpmIR4qETSXAE+3lPk2hc848UsyfCIa+h48SzH8NW1iJeHjFlHS4w4zyYaL0bpdS+sqBM3dihGFCLKz2sXM8MLUL5yB+X3ShOy/yEfkCdTsJCRFAcNF8IodXwK44lweQCXG8mK4xkfw55RXEEykNKW4NOCgxN1xkePkmRNPbtdzmLXc6nrn9Tl67+o1tePuNx4vTZuLqPh5qpvcWe5dKgZ23HU1/h33YxxyOeWqhFJ900Uy4d/OxPlaMtmHQYG9zJJOYzjHSgV5kLeW5opw6esOAgW/vKXf+8Z0u0Yokvo2IvRJfSyLiE1LbefPd73Q4htuWbYtRRsQfAKDPYu5HVYIMfNId8NwtB9LvQeXv0c8D28/hnwu7+8bYmUs8mmqXHGk6KNGjUpM/nXMIi82Nj0ZHtgySP2Cyzwh4cewi52P/EAc/uaOMKEsQ0n9OK4t5jOTeKsP6mtmGcMpuv7VmBtCG/d0C4nWvs4sSt2YS85tchc92jkdApzXHBPHGd56SExLc8+rYTpEZZXy9jZP1hmENlGEPRmeT9hsED9c9OvauDWg3Vvle8drE00ldmMpmqP3VPCn0b1KvGELYIKL4PfPLD8NiFnW8uPadrvxDeJSTrhrjpm843gGdili/QaUhXK8UyI7LdHoF33vZAZ9kWa7p+KVVqC8Q6S+9q1+n/BeVlBiLrssOrD3g5CWx1t9Tdlq/ccvmVEph0HDpYmxUPEsx4imtSwWIhZVU0S+zivyX1xz12j7JB3DcEyALDYjLqRjmpc3WApxaLUphIw8ruqbrTAS30xPORBXjQjL3KCzuwW1QjyIkK9Z6ibNIw8t78t/oVCfSQERjMPGyksNEzfo0iKh5Fyw4tJkfIq3Ze99nRaJLrvR0HQ5YlWjSAtIth7Bjt1Ld03EeyPgF3kd3zOC2TGQYOFhIGvW7QruWSDjAGDpSpEVaoS9hxie3phRhqZtkkYHqQi2M8KdmrbkR6dFhp4+cy4EFyJ10BIZp3XhyQ5aNwwFgcWcULEzUHcCLl/vOXZJJ1OtImQzzEpVvMjigLVPLTb7aZl+aFvwJB903iaVohJfYvtm7GMwDBs2lXZ9slz4DWFQ/wxqeRily0rFSWSZKVa+uQymKoC67cSsdX+kBGMiMCIiH2mpXo3gIgI3XNNYplR/Vs05NEgaY3dNzriCi3XIx4ecTV57PdJUgCFbcsTasuMz7VpkuTdRggCZgCAsRzLDwIH03abgPlcKAWLBVh7AJvr1dW67DXo23RjBl7qJuBRDzuBjNj1Aw/LXCPgz8qQduDEZrSejAj4XcBDccKbIuX55F2aH1CqQrgMAC66SUnkezCeCJdHvkNZmRPe/p6d/J9yKdnncV3mo3B7J4qpJOejvnJvzlEvTw62AdzJ2j54xLB+gpFg+IFvx1bXaq0aQSMBV72eVz1CAocRH1e95mLzB7V51pIJX6CwHaKEBrFJMf2mjZIfYMM8F8uKyxESAgqB3fGqr9JGVhwYLu1M41CNICMi1nvGuulEpgtARaw/xLrS68rB7h+tUthAS0P4NsknHNlx8DvnkDjEjAEbiJh7xHzlc57XQDmiBtiaGGu62e1jYgUuc93T4m/6ElahzI4d1+stiA6FVe5njaVpYdrMyey4r5cXVgF9v3SuTZK9vhPtlvN9yaU7s8kJian3VzH0NYUVfVHAV71SwXKgzVLZMSmvStVrI54l+bSACKO0VFKJ2rVYfdB8uVhsBaPVp2/lp6+5Ns+ScspzKB+qLYT8SXayIuMb2awSckmvVcAmyrdgsNIlBCs9V2rR0H3XM9yuc60tCFBq8bGrnwO+l5dajGhMojW17drRr1dqkQSm40X9JSO9YalF5pCYsN7c12+3JwxGqBN1ysZecE8omNQv29V0t3/0wI0i2EN/671R83E6pq1jub5unBYkv3szy2TK/YInc1/tZB69DeK6tuN28t+3nDMXv0WzNQ1OvhvztePGXn6PBjuxudw4JPn+c/n2xLGYwyLDOQ1Mr3Q39pFLOwKCfuRmixdy91RqU8HlDiv/oEECiOwktYFSv5RbNjmCyVSbCJ5j6gfupjD1Yyf1w/YDEumoboL+hnP6G1jAiGWQ3vIQT+Pm1+hvmOerqkTPHPqyXSMITVTCbCHlyxLKfh8AB7zUn4VnOsiBtm85ke5haWJE9lk50ArlHoOhjkkT2T+s7lI+1xbJuqrctkw5EuGg4WKxSA8cNBlbcPFyOBABmZ9s2RcfRlZg+E5XT6tGkA8R4D0DXCd25DMXkx2bAP+JFyp/AXRt6yKcSISDxonNdNcM/Ahx0sDJ59XdHc9KMBknPJ+rJEJeXfMDqulP4ERi0VA3TcztQ6yfE+vECiIPM5rbWA/EYrmC+FQVlDme5fLmp+kBjT4EyxDAQlzfYQS8iAiWe7B8D67w7SlKnQAEWT8Hj1SeQI3MJlA3qKvbVSNIjYj2ntFumA6hhouOkSbaQyGKOoP3vQbhC6CDqtIPtkKoKdYRGjZyTD2iYRgaiJwGcj4CShQxlr/R7lKuEn0EvH+UJmvy2e1p6ulx5JunuXiOCGslxt6wVgxuw+C2fbaSendJqUKW49gO9d/C6QymCnVf3ibUo1OFwiDyYmPTk+2Bfb2pQiwOdBI7vR3lXlpaiEli3zKd01xCx6SFOMifyJ/D5U9iua4FRiTyJ/Ln0/lTTZyD/PnYRnZfE0fwJ6GGZVjsm8QENfeu6r/6tp91/jrlkyTJf6X5/FYJr6aVtkzKpRBFpZXJYq1mfM1BgOP9Vn5jrVSacV7Mi2Qse0t+cMRBHUIVtyn4lGeLBHQOxTJP+er2w7O5ljAj9iP/mPM0ixo0UAPW7sv1X+pe4ePqc2PpWf9Vfff0C3QjzA3i6irfcAbzxDHXiXLLqRx6mBJiKUFfL69qwmzf1RNs+xbm4/bNjCcTIHZbV0N+JYTi+fXb6apSb9c3Kkcahm8NLfiM+vVEjGEFhabTnH9Oq/GsTm2sx7d+PPXjSEx+Vj/IS1ZyLKvv/g8AAP//AwBQSwMEFAAGAAgAAAAhALO+ix0FAQAAtgMAABwACAF3b3JkL19yZWxzL2RvY3VtZW50LnhtbC5yZWxzIKIEASigAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArJPNasMwEITvhb6D2HstO21DCZFzKYFcW/cBZHv9Q/VjpE1av31FShKHBtODjjNiZ76F1XrzrRU7oPO9NQKyJAWGprJ1b1oBH8X24QWYJ2lqqaxBASN62OT3d+s3VJLCkO/6wbOQYryAjmhYce6rDrX0iR3QhJfGOi0pSNfyQVafskW+SNMld9MMyK8y2a4W4Hb1I7BiHPA/2bZp+gpfbbXXaOhGBfdIFDbzIVO6FknAyUlCFvDbCIuoCDQqnAIc9Vx9FrPe7HWJLmx8IThbcxDLmBAUZvECcJS/ZjbH8ByTobGGClmqCcfZmoN4ignxheX7n5OcmCcQfvXb8h8AAAD//wMAUEsDBBQABgAIAAAAIQDJecyQNgcAAA0iAAAVAAAAd29yZC90aGVtZS90aGVtZTEueG1s7FpPixs3FL8X+h3E3B3PjP+HOMF/mya7ybK7SclR9sgzijWjQZJ315RCSU+9FApp6aGB3noopYEGGnrphwkktOmHqKQZj0e23DTNpoSya1iPpN97+um9p6c3M75y7Swm4AQxjmnSdbxLrgNQMqUBTsKuc+d4XGk7gAuYBJDQBHWdJeLOtavvv3cFXhYRihGQ8gm/DLtOJER6uVrlU9kN+SWaokSOzSiLoZBNFlYDBk+l3phUfddtVmOIEwckMJZqb8JEUMqUSuhcXSkfEfkvEVx1TAk7UqpRLnF7NsNTpLHB3FNffMkHhIETSLqOnCegp8foTDiAQC7kQNdx9Z9TvXqlWggRsUO2JDfWf7lcLhDMfS3Hwkkh6I78dt0r9GsAEdu4UVt9Cn0aAKdTudKMSxnrNZpu28+xJVB2adHdaXk1E1/SX9vW32n2/bqB16Dssr69xnFnNGwYeA3KLhtb+J7r9zs1A69B2WVzC18f9Vr+yMBrUERwMt9GN1vtdjNHF5AZJdet8E6z6baGOXyNqpaiK5NPxK5Yi+F9ysYSoJ0LBU6AWKZoBqcS10sF5WCIeUrg0gEpTCiX3a7veTLw6q5ffLTF4WUES9JZ15RvdSk+gE8ZTkXXuSG1OiXI86dPnz148uzBL88+++zZg5/AHg4jYZG7DpOwLPfy+y//fPQp+OPn714+/MqO52X8ix8/f/Hrb3+nXhi0vn784snj59988fsPDy3wHoOTMvwYx4iDW+gUHNJYLtAyAZqw15M4jiAuS/SSkMMEKhkLeiQiA31rCQm04PrItONdJtOFDfjB4r5B+ChiC4EtwJtRbAD3KSV9yqxruqnmKlthkYT2ydmijDuE8MQ292DDy6NFKuMe21QOImTQPCDS5TBECRJAjdE5Qhaxexgbdt3HU0Y5nQlwD4M+xFaTHOOJEU1roes4ln5Z2ghKfxu22b8L+pTY1A/RiYmUewMSm0pEDDN+ABcCxlbGMCZl5B4UkY3k0ZJNDYNzIT0dIkLBKECc22Rus6VB9yaUecvq9n2yjE0kE3huQ+5BSsvIIZ0PIhinVs44icrYD/lchigEB1RYSVBzh6i29ANMdrr7LkaGu1+9t+/INGQPEDWyYLYtgai5H5dkBpFNeY/FRortMWyNjv4iNEJ7DyECT2GAELjzoQ1PU8Pma9I3IplVriObbW5AM1ZVO0EcAV3cWByLuRGyRyikO/jsLzcSzxImMWS7NN+amyEzmjC5GW3xSqZzI5VipjatncRtHhvr26n1IIJGWKk2t8frkhn++yd7TMrc/xcy6LVlZGL/x7Y5hsSYYB0wxxCDPVu6lSKG+9ciajtpsYVVbmZu2rUbqhtFT4yTV1RA/13lI+uL598+smDPp9qxA9+kztmVSjarm124zZpmQFmA3/2SZggXyQGSp4gFelHRXFQ0//uKZtd+vqhjLuqYizrGLvIW6ph16aIfAK0e82gt8c5nPjNMyJFYErTHddHD5d4PxrJTN7RQ8YgpjeRlPp2BCxnU14BR8REW0VEEUzmNp2cIea465CClXBZOutuqWw2QRbxPg/wJnqqw9FNNKQDFut9tFP2ySBNZb7O1fgRaqNetUD9mXRFQsq9DojSZSaJmIdFadb6ChF7ZubDoWFi0lfqdLPRX7hV5OAGoHog36hkjGW4ypAPlp0x+5d1z9/QuY5rL9i3L6yiu5+Npg0Qp3EwSpTCM5OGx2X3Ovu6sXWrQU6bYptFqvw1fqySykRtIYrbAqeLUUnqmMO06M3nHJC/jVCrkKlVBEiZdZypyS/+b1JIyLoaQRxlMD2UGiLFADBAcy2Av+4EkJXIduWneVXK+csK7Rk5/lb2MZjM0FTt61k05limxjr4hWDXoQpI+ioJTMCELdgiloRotT3k3wFwUrg4wK0X32oob+Srfi8bLn/UehSSNYH6klLN5BtfXBZ3SOjTTzVWZ7Xwxk1A56Y2P3VcLqYFS1txxgqhj055A3t4pX2K1TvwGqyx3bya7zirZ7Tom3vxEKFFbT2ZQU4wt1Na9JrVzrAhK0xWhueuQOO/jYDNq1QmxKix1a+u9Np3cl5E/lOXqgmQ9JJEtTTk9YJr7hAbL/JLwbJdka1qlAZIcohnAwZlMmTbj5C+OiyR2mE2gDq9C0GpVUzDHK1y2YQvhLMD/VriQ0DPL2rsQ1mW5TYE4K2bO8JnDiqyRW0rlmi0ryns/Bger17pZOtW9qxR9JsCC4a7zsdvo1Qd+Y1Bx241RpV6ru5V2o1er9BqNmjdqeO6w738i6Yko9hqZA8cwxmSZ//ZB92/9/iFe3bBcmtK4SvXdRFUL698/eL7x+4fsbgMcq3FHWkXS8kde3e/5g8pg6DUrdX/YrLRbtV5l4DeHfk9m8ua494kDTjTY6w+H43HDrzQHEld3e41Kr18bVJrtUd8fe6P60JXg3BFneQ7ObbGKyqt/AQAA//8DAFBLAwQUAAYACAAAACEAcjpwpl4EAADTDAAAEQAAAHdvcmQvc2V0dGluZ3MueG1stFffb9s2EH4fsP/B0PMc/YikuFqdInbsJUXcFlOGAXujJMoiTIoCSdlxi/3vO1KiZS9BEbfIS0zdd/fdifx4p7z/8MToaIuFJLyeOv6F54xwnfOC1Oup89fjcjxxRlKhukCU13jq7LF0Plz/+sv7XSKxUuAmR0BRy4TlU6dSqklcV+YVZkhe8AbXAJZcMKTgUaxdhsSmbcY5Zw1SJCOUqL0beF7s9DR86rSiTnqKMSO54JKXSockvCxJjvsfGyFek7cLueV5y3CtTEZXYAo18FpWpJGWjf0oG4CVJdl+7yW2jFq/ne+94nV3XBSHiNeUpwMawXMsJRwQo7ZAUg+Jw2dEh9wXkLt/RUMF4b5nVseVR+cRBM8I4hw/nccx6TlciDzmIcV5PPGBhwwb68c/VswRQdGeRRFc2jr0jw4/4pKFKqrz6OwZuToWKVQheVBkx1jS8xjDI8ZOYJTnm2NOfN6mRQfCPRvOUD4v6wVVd9ADyQQSXc/oJc3y5H5dc4EyCuWAtEegzpGpTv+FQ9Y/ZomfjF3vbb8oqV7A1l9DS/vKORvtkgaLHO419EPPc1wNFEQ2FO1nKN+sBW/rIq1Qgw0EF42XqUIKkiWywZSa3plTjKC2XbIWiEHXs5aODpeopeoRZaniDThtEWzBlTfp4GrfVLg2vekf6LoWD4Oow/MKCZQrLNIG5ZBtzmslOLV+Bf/E1Rw6rIAG0EeYfjus0q53Q0SNGGzaST9e8QLryltBXn+6OsBk922RLybiMGsEKfCjPqxU7SleQvEp+Ypv6uJjKxUBRvPmP1HB9wqAfYXMn0Fej/sGLzFSLWzTGyUzJ7GkpFkRIbi4rwuQ1ZslI2WJBSQgoMUVyIsIvjP7fIdRASP+jfK2Ev8NznC7Lx9BlpsZV4qzu0HDP5nXPZYvfKgU0i7+5FxZV89bBNFN2N8gjQ6Id3t1uFuniO97/jJ8CYnDIJz3t/8UGfK4h3pYosf/F2FXWtQj1kXMEcsEQaOV/kBwtUcmNjNSWzzD0OXwMZK2mQXH4w6QDFG6hO21gCmNmcZ0i0uzpisk1gNv7yFetEIH+njg0s0Oiz+gsTUduhOo6cRqXfww7CNJrR4Is3bZZqmNqqEvH0HQJT9vhdmnYXt2iYLDN5f+ARkRGd+ajmeLXmRUpFogeIWaptNZtvanDiXrSvlaGgqeCviONA/ZOuixwGBBh5kHlOs3A+9+MdgCazvyu7S2y8EWWls42CJriwZbbG2xtkH/xgLGwAYkb5faXnJK+Q4XdwP+zNRtgtTj5babEiAv3hn6sSFH2wQ/wXjCBVHwed6QgqEnPa2CWIf33jCveKtOfDWmnZtTBv2xYC/bSbCR+P9q0dMrJyDHdM+yYej81hVOiYQG0cB8UlxY7HeD+WFS8PxeD+OwH2izm3fz+WXXXfzoAEcd/G3yLl5cXc28sR8tbsbhIorGN3CTx5MFGMMgvrqNJ//2F9H+N3L9HwAAAP//AwBQSwMEFAAGAAgAAAAhAO5hYkXSAwAASxIAABIAAAB3b3JkL251bWJlcmluZy54bWzElsuOpDYUhveR5h0Q+25zh0JTPaK6i1FHuUnpPIALXAVqGyNj6vIMs5hdss2z5UliA4bqIRkBPZreYLB9Pv8cn+Pj9x/OBGtHxKqcFmvdvDV0DRUJTfPisNb/eIpvAl2rOCxSiGmB1voFVfqHu3c/vD+FRU12iImJmmAUVXgqk7WecV6GAFRJhgisbkmeMFrRPb9NKAF0v88TBE6UpcAyTKN5KxlNUFUJzj0sjrDSO1xynkZLGTwJYwl0QJJBxtF5YJizIS5YgWAMshaAxB9a5hhlz0Z5QKoagZxFIKFqRHKXkf7j57xlJGtM8peR7DEpWEYahRMZBzgtUSEG95QRyMUnOwAC2XNd3ghwCXm+y3HOL4JpeAoD8+J5gSJh1ROInc4m+IDQFGE7VRS61mtWhJ39TW8vpYetfdf0FghPW1YstwLozHHFlS2b4rvW/IEmNUEFb7wGGMLCj7SosrzsTweylCYGMwU5fs0BR4LVvFNpTky1/zvaHtptGIBT5Hd7R3Cr/OtE05iwmxLRW0yR8HJNpYSICB4WXuSaK+eaEw8fBbBGAC9BE4uFYgQdAyRDdktOPjGtFKfdFcnJB8eaE8/AL8VcAdJ6FsKylQ7ZSPMrVpXyNJuHU3sEpC3kMINVnzQtcT/xIFBE54rYBhimSX+eSSaa5zS3B17I1R6Wh9cl6kdG63Kg5a+jPQ5H9knenmawuoS/PoSq14n5PYOlOMlJEj4eCsrgDgtFIn01kYFaswPyKQJZNs0rOjf9Mn66lz2WL2mtySNRvxO3QLirOIMJ/6Um2ouvR5FK4jYp4CFD4grJZGd7YYz2HLENQ/BZTpGUopLLhkcowspwI89b+YYO5AipMc9/QkeEny4lUnOyy47l6c9yDMuxdi4nJVYzVlHsxNEmaEfwUQ7komlFhbzEopjHDw+O626tRkOjUZmbrZ2448ak79zVGCPeE59EgVND//z1ue//MVG9GO276eVvTDZ5IX9Tdq9132qUZLA4NLdt22t+GXSTQcP6Urw5iDctQYjj1oGvFP9prnjTcRaotwb10SbyVo4ffQP1f/49V71legvU24P6wN1YgW9/E9/PDhwrCBaodwb1m2hjBHaXwN87coTYBerdQb0dO1Hgrd4mchx7SdZ6g3rvfutZEvIWkeMaS7LWH9RvfXe72d5v30a9vyRrg0G9b8Se5b+Res+ZlrXgRRXtVGnNU5ZUWQCaKh2mdVPDm07DWBmeYxqjmvwoBTTiunoq1vj1iJionrKYqorYO+RqbHBMK00NNd+FlNa2bU2/+xcAAP//AwBQSwMEFAAGAAgAAAAhAOFhYHpEDQAASIEAAA8AAAB3b3JkL3N0eWxlcy54bWzUnU1z2zgShu9btf+BpdPuwZFtyXYmNc6U7dgT19gZz8iZVO0NIiELY5DQ8sMf++sXAEGJVBMUG0S8sznEEsV+CPTb3QBISvzxp5eYB080zZhITkcH7/ZHAU1CEbHk4XT09f5q7/0oyHKSRISLhJ6OXmk2+unj3//24/OHLH/lNAskIMk+xOHpaJnnqw/jcRYuaUyyd2JFE/nhQqQxyeXb9GEck/SxWO2FIl6RnM0ZZ/nr+HB//3hkMGkfilgsWEg/ibCIaZJr+3FKuSSKJFuyVVbRnvvQnkUarVIR0iyTnY55yYsJS9aYgykAxSxMRSYW+TvZGdMijZLmB/v6Vcw3gCMc4BAAjkP6gmO8N4yxtKxzWITjHK85LKpx3BpTA0QFCnE4qdqh/ijzGiuL8miJw1UajZUtycmSZMsmccFxxGmNWAYYF+FjnUlxTjtaA19jpWEcfrh+SERK5lySZFQGMrACDVb/S33UH/2Svujtyi3mxYKrF9JrH2XqRiL8RBek4Hmm3qZ3qXlr3uk/VyLJs+D5A8lCxk5HF4SzecpGcgslWX6WMdLYuDxLsuZuYbZ5O1bIUHCRyg+eiHTtof5XfpD9Z7O12nKhjt3YxknyUG1L+N75ZbMt601zFsmGkHRvdqYMx6ZL5d9aR1frd+VeW16RBUWWl1lZ5eSndHEj9aTRLJcfnI721aHkxq/XdykTqaxkp6MffjAbZzRmn1kU0aS2Y7JkEf22pMnXjEab7b9d6WAxG0JRJPL15ORYK8Wz6PIlpCtV2+SnCYnlob8oA672Ltjm4Nr83xXswPiszX5JiSrwwcE2QjcfhThUFlmtt+3MYqvvei/UgSZvdaDpWx3o6K0OdPxWBzp5qwO9f6sDacz3PBBLIlmr9f7wMIC6i2PJRjTHkmxojiWX0BxLqqA5lkxAcyyBjuZY4hjNsYQpgpOL0BaFtWCfWKK9m7t7jHDj7h4S3Li7RwA37u6C78bdXd/duLvLuRt3d/V24+4u1nhuOdUKrmWaJfngLFsIkScip0FOX4bTSCJZetXrh6cGPZp66aQHTFnZzEA8mBYS/X53hOgkdR/Pc7U4C8QiWLCHIqXZ4IbT5IlysaIBiSLJ8whMaV6kFo+4xHRKFzSlSUh9BrY/KGcJDZIinnuIzRV58MaiSeTZfRXRS1FYBzQp8qVKEuYhqGMSpmJ40wTxVh9uWDbcVwoSnBecU0+sL35CTLOGrw00ZvjSQGOGrww0ZvjCoKaZLxcZmidPGZonhxmaJ7+V8enLb4bmyW+G5slvhjbcb/cs57rE12cdB/3P3V1woa5TDG7HjD0kRE4Ahg835pxpcEdS8pCS1TJQZ47bsfU+Y49zLqLX4N7HmLYm+ZrX6xC5kL1mSTHcoQ2ar+Ra8zyl15rnKcHWvOEpdiunyWqC9tnPemZWzPPWpNWkXkk7I7woJ7TDs43kwyNskwBXLM28pUE71kMEf1HTWSWnj8q3aeXwhm1Yw9Nquyp5bZ5Bemiluqjppwx/fl3RVC7LHgeTrgTn4plG/oizPBVlrNVT/lBL0ivlL+PVkmRMr5UaiP5DfXWHQ3BLVoM7dMcJS/zodrkXE8YDfzOIz/e3N8G9WKllpnKMH+C5yHMRe2OaM4H/+Ebn//TTwDO5CE5ePfX2zNPpIQ27YB4GmZIkIk8kOc1kCfMyhmreL/R1Lkga+aHdpbS85yOnnogzEq/KSYeH3JJ18VnWHw+zIc37g6RMnRfylVT3XmC104ZZMf+ThsNL3RcReDkz9GuR6/OPeqqrrf3hhk8TGrjhUwStphweVPx66GwDN7yzDZyvzl5wkmXMegnVmeeruxXPd3+HL/4MT90Ztii4PwdWQG8erIDeXCh4ESeZzx5rnscOa57v/noMGc3zcEpO835OWeRNDA3zpYSG+ZJBw3xpoGFeBRh+h04NNvw2nRps+L06JczTFKAG8xVnXod/T1d5ajBfcaZhvuJMw3zFmYb5irPJp4AuFnIS7G+IqSF9xVwN6W+gSXIar0RK0ldPyEtOH4iHE6Ql7S4VC/VtE5GUN3F7QKpz1NzjZLvE+RL5G517a5pi+WyXhzOihHMhPJ1b2ww42rJ579ous/sljYcvo+84CelS8Iimlj7ZbeV6ebYioTlNDy739TrtecMelnkwW67P9tcxx/s7LasFe8Ns9wHbfH5cffOkzeyWRqyIq4bCL1McT/ob64huGE93G29mEg3Lo56W8JjHuy03s+SG5UlPS3jM9z0tdZ42LLvy4RNJH1sD4aQrftZrPEvwnXRF0dq49bBdgbS2bAvBk64oaqRKcBaG6moBVKdfztjt+yWP3R6TRXYKJp3slN55ZUd0Jdjv9ImpkR1TNPXx1ndPgLqvJ9G9KudvhSjP2zcuOPX/Ute1nDglGQ1aOZP+F64aVcbux97lxo7oXXfsiN4FyI7oVYms5qiSZKf0rk12RO8iZUegqxUcEXDVCtrjqhW0d6lWkOJSrQbMAuyI3tMBOwKdqBCBTtQBMwU7ApWowNwpUSEFnagQgU5UiEAnKpyA4RIV2uMSFdq7JCqkuCQqpKATFSLQiQoR6ESFCHSiQgQ6UR3n9lZzp0SFFHSiQgQ6USECnah6vjggUaE9LlGhvUuiQopLokIKOlEhAp2oEIFOVIhAJypEoBMVIlCJCsydEhVS0IkKEehEhQh0opZfNXRPVGiPS1Ro75KokOKSqJCCTlSIQCcqRKATFSLQiQoR6ESFCFSiAnOnRIUUdKJCBDpRIQKdqPpi4YBEhfa4RIX2LokKKS6JCinoRIUIdKJCBDpRIQKdqBCBTlSIQCUqMHdKVEhBJypEoBMVIrri01yitN1mf4A/62m9Y7//pSvTqN/rX+Wuoyb9UVWr7Kz+30U4F+IxaP3i4USvN/pB2JwzoU9RWy6r17n6lgjUhc9fL7q/4VOnD/zRJfNdCH3NFMCnfS3BOZVpV8jXLcEib9oV6XVLMOucdlXfuiUYBqddRVfnZXVTihyOgHFXmakZH1jMu6p1zRy6uKtG1wyhh7sqc80QOrirHtcMjwJVnLetj3r66Xh9fykgdIVjjXBiJ3SFJdSqKscwMfqKZif0Vc9O6CujnYDS04rBC2tHoRW2o9ykhmmGldo9Ue0ErNSQ4CQ1wLhLDVHOUkOUm9SwMGKlhgSs1O7F2U5wkhpg3KWGKGepIcpNajiUYaWGBKzUkICVeuCAbMW4Sw1RzlJDlJvUcHKHlRoSsFJDAlZqSHCSGmDcpYYoZ6khyk1qsEpGSw0JWKkhASs1JDhJDTDuUkOUs9QQ1SW1PovSkBqlcM0cNwmrGeIG5JohrjjXDB1WSzVrx9VSjeC4WoJaVZrjVkt10eyEvurZCX1ltBNQeloxeGHtKLTCdpSb1LjVUpvU7olqJ2Clxq2WrFLjVkudUuNWS51S41ZLdqlxq6U2qXGrpTap3YuzneAkNW611Ck1brXUKTVutWSXGrdaapMat1pqkxq3WmqTeuCAbMW4S41bLXVKjVst2aXGrZbapMatltqkxq2W2qTGrZasUuNWS51S41ZLnVLjVkt2qXGrpTapcaulNqlxq6U2qXGrJavUuNVSp9S41VKn1LjV0q00YR5+AmoWkzQP/P1e3GeSLXMy/McJvyYpzQR/olHgt6s3qF6OnxuPv1Js/bg/uX8ufaZ+Ab32daWo/AVYA9Q7XkfqN/TUcwPVT2wpe9WYwDy9yzzASrfZXLEtD6ptdxxtzf9FrA4AevNsK03fBFa1g0mdzWH1g8DUH1H+DNLNE6/21fkxXu9gnowWqgiudjm8PJmem0upm8eYTVoeY1Zuqz2NDNvZQ2tnzdGsnd2IXu7XkLy/O6rQQLvj0FTdxlPd9LYB7phY3WGupn9vd1R6drjj4Gr66cSU+5o7zEX7hjv0tgHumFrdYY72vd2hvQ7cwbQRu8j0X0usDOj2kbXbJgq/d7cr3XolxYCOls8DbOuoSa7v3dGqA73CfXdHw6XsaWh+knDXCEJUW8gep7k0UPbAGZZfIbd4xowOuzxjb32uZjN9Wi53pNwyAJZzIqt6veXL57wUQ764TiIJeDaPgywbG72QEiU/v6Cc35Jyb7Gy78rpIi8/PdjXP0mz9fm8/HVVq32qp+FWwLjZmPJtd8CUz1sx94dZ3P4zpQlnf2Z5i8f1/YpDnY1N3HuWt8hf3otni00zK68npUm2zRBy1DKiltuQJSYsMqnjTO2w7cx/PcsAhjMss9nWxnkZHrrgu5a7GyVhmfPg8Hoxsfm2/FYzetab9ZE2K4Dt42w+2REyLQnZVhv3j44nF9WstNqoHuVQRgKyYK478IegeSJErh6tXWbHdkdaHtA0uOKYDj7JYnzG2YNabJT9KaTTsjBlK51prvpXncrpY0sqN5+iVlYrqVP1ccP4QjrNW3drMziTo40ZXLVawOjYkX6wH9uOaOwRbLpq9cZf2RPrfl8y9fyqroiGj8z6qwd01af2gG48sAso2LD9P45n2I9tPzT2sMRz05P/W09Ur7KP/wUAAP//AwBQSwMEFAAGAAgAAAAhADsK/ZZPAQAA+gMAABQAAAB3b3JkL3dlYlNldHRpbmdzLnhtbJzSUW/CIBAA4Pcl+w8N70p1akxj9WVZsudtPwDh2hKBawBX/feDWl0XX2Qv5Wh7X447NruTVtk3WCfRlGQ2zUkGhqOQpi7J1+fbZE0y55kRTKGBkpzBkd32+WnTFR3sP8D78KfLgmJcoXlJGu/bglLHG9DMTbEFEz5WaDXzYWtrqpk9HNsJR90yL/dSSX+m8zxfkYGxjyhYVZLDK/KjBuP7fGpBBRGNa2Trrlr3iNahFa1FDs6F82h18TST5sbMFneQltyiw8pPw2GGinoqpM/yPtLqF1imAfM7YMXhlGasB4OGzLEjRZqzujlSjJz/FTMCxDGJmL9c64hLTB9ZTnjRpHHXGdGYyzxrmGv+ipVKExcj8XLBFPLD2IS0pi1v4FnHGWpevNcGLdurIIVbmYWLlfVwfIb5xKUP4dS/j20ZgkrFIHSNbn8AAAD//wMAUEsDBBQABgAIAAAAIQAs50noJgIAAN8HAAASAAAAd29yZC9mb250VGFibGUueG1s3JPLbtswEEX3BfoPAvexKPkZI3bQNjHQTRdF+gE0RVlE+BA4tGX/fYeU7KgwWkQBkkW1kEZ3OEczl9Td/VGr5CAcSGtWJBtRkgjDbSHNbkV+PW1uFiQBz0zBlDViRU4CyP3686e7Zlla4yHBegNLzVek8r5epinwSmgGI1sLg8nSOs08vrpdqpl73tc33OqaebmVSvpTmlM6Ix3GvYZiy1Jy8WD5XgvjY33qhEKiNVDJGs605jW0xrqidpYLAJxZq5anmTQXTDa5AmnJnQVb+hEO03UUUVie0Rhp9QKYDgPkV4AZF8dhjEXHSLGyz5HFMM7swpFFj/O2ZnqAYj8IkY/PfYRHKO+xoPBFNQx33qM01DLPKgbVn8RSDSNOesT2gCnLn/tMMcy06QV40mEPNV9+3xnr2FYhCU9lggcrieBwx/0JjxiKY9SDLV1QqhCga+vuz02apWEaQd+YklsnY6JmxoLIMHdgOD7atKFTGuzK6YSOw52kYSGvmAMRIO1C2sol01Kdzio0EqBN1NLz6qwfmJNhiDYFcoeJPWzpijxOKM0fNxvSKhl2h79jPpl/7ZQ8fCtet50yvig0KDxy4mvWcnjkXNbgN9PWgSsnnqQWkPwQTfLTamb+4khOZ+jEFP0IzowHOeIid5Aj9MoRVOaL6Yc48qX2FpIHCbVip+jHO218HjrJF/OXMbvuxldjxqH+PebtW8b8j8brAlj/BgAA//8DAFBLAwQUAAYACAAAACEAJ1iKq0oBAACEAgAAEQAIAWRvY1Byb3BzL2NvcmUueG1sIKIEASigAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnJLLbsIwEEX3lfoPkfeJnSAhGiVGaitWpapU+lB3lj2A1fgh2yXw93UCBFBZdWnPmZM741TTrWqSDTgvja5RnhGUgOZGSL2q0dtilk5Q4gPTgjVGQ4124NGU3t5U3JbcOHhxxoILEnwSTdqX3NZoHYItMfZ8DYr5LBI6FpfGKRbi0a2wZfybrQAXhIyxgsAECwx3wtQORnRQCj4o7Y9reoHgGBpQoIPHeZbjExvAKX+1oa+ckUqGnYWr6LE40FsvB7Bt26wd9WjMn+PP+dNrP2oqdbcrDohWgpfcAQvG0TedaqZAVPjssltgw3yYx10vJYj7HX2W3MSr5B1cK5Wt8F+k63Kwkd1z0aInhmN1mH3/CRBJzFzuJzxWPkYPj4sZogUpxim5S/PJgozLgpSEfHXpLvpPQnUI8G/jUUD7xJf/Df0FAAD//wMAUEsDBBQABgAIAAAAIQB/3Pg+ewEAAMwCAAAQAAgBZG9jUHJvcHMvYXBwLnhtbCCiBAEooAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJxSy07DMBC8I/EPUe6t0wjaUm1coSLEgZfUQM+Ws0ksHNuyDaJ/z4ZACOJGTruz3vHMxLB973Tyhj4oa4p0Mc/SBI20lTJNkT6V17N1moQoTCW0NVikRwzplp+ewKO3Dn1UGBKiMKFI2xjdhrEgW+xEmNPY0KS2vhORWt8wW9dK4pWVrx2ayPIsWzJ8j2gqrGZuJEwHxs1b/C9pZWWvLzyXR0d8HErsnBYR+X2/qYGNAJQ2Cl2qDnlG8NjAo2gw8DWwoYCD9VXgi/PVBbChhl0rvJCR0uPr5XoFbALApXNaSREpWH6npLfB1jF5+FSb9ATApkeAHOxRvnoVj72SaQu3ypCEVQ5sqEicF40Xrg08z3qJYwt7KTTuyD2vhQ4I7AeAne2cMETIxooIX8KTK+1Vn8bXym9w4vOgYrt3QpKGRZafLaeWJzPYE4oVeRhFjADc0D/xur+Bdk2D1feZv4M+xOfhcfLFcp7R95naN0bOx1fDPwAAAP//AwBQSwECLQAUAAYACAAAACEAMpFvV2YBAAClBQAAEwAAAAAAAAAAAAAAAAAAAAAAW0NvbnRlbnRfVHlwZXNdLnhtbFBLAQItABQABgAIAAAAIQAekRq37wAAAE4CAAALAAAAAAAAAAAAAAAAAJ8DAABfcmVscy8ucmVsc1BLAQItABQABgAIAAAAIQBRnLWPcDwAAMp1BAARAAAAAAAAAAAAAAAAAL8GAAB3b3JkL2RvY3VtZW50LnhtbFBLAQItABQABgAIAAAAIQCzvosdBQEAALYDAAAcAAAAAAAAAAAAAAAAAF5DAAB3b3JkL19yZWxzL2RvY3VtZW50LnhtbC5yZWxzUEsBAi0AFAAGAAgAAAAhAMl5zJA2BwAADSIAABUAAAAAAAAAAAAAAAAApUUAAHdvcmQvdGhlbWUvdGhlbWUxLnhtbFBLAQItABQABgAIAAAAIQByOnCmXgQAANMMAAARAAAAAAAAAAAAAAAAAA5NAAB3b3JkL3NldHRpbmdzLnhtbFBLAQItABQABgAIAAAAIQDuYWJF0gMAAEsSAAASAAAAAAAAAAAAAAAAAJtRAAB3b3JkL251bWJlcmluZy54bWxQSwECLQAUAAYACAAAACEA4WFgekQNAABIgQAADwAAAAAAAAAAAAAAAACdVQAAd29yZC9zdHlsZXMueG1sUEsBAi0AFAAGAAgAAAAhADsK/ZZPAQAA+gMAABQAAAAAAAAAAAAAAAAADmMAAHdvcmQvd2ViU2V0dGluZ3MueG1sUEsBAi0AFAAGAAgAAAAhACznSegmAgAA3wcAABIAAAAAAAAAAAAAAAAAj2QAAHdvcmQvZm9udFRhYmxlLnhtbFBLAQItABQABgAIAAAAIQAnWIqrSgEAAIQCAAARAAAAAAAAAAAAAAAAAOVmAABkb2NQcm9wcy9jb3JlLnhtbFBLAQItABQABgAIAAAAIQB/3Pg+ewEAAMwCAAAQAAAAAAAAAAAAAAAAAGZpAABkb2NQcm9wcy9hcHAueG1sUEsFBgAAAAAMAAwAAQMAABdsAAAAAA==";
+
+  async function downloadPaspoort(){
+    try{
+      const downloads = await claude.use("downloads");
+      if(!downloads){
+        window.alert("Downloaden is in deze weergave niet beschikbaar.");
+        return;
+      }
+      const byteChars = atob(PASPOORT_DOCX_B64);
+      const byteNumbers = new Array(byteChars.length);
+      for(let i=0; i<byteChars.length; i++){ byteNumbers[i] = byteChars.charCodeAt(i); }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+      await downloads.save({ filename: "CVI-paspoort.docx", data: blob });
+    }catch(err){
+      console.error(err);
+    }
+  }
+
+  ["dlPaspoortBtn", "dlPaspoortBtn2"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el){ el.addEventListener("click", downloadPaspoort); }
+  });
+</script>
+</body>
+</html>
